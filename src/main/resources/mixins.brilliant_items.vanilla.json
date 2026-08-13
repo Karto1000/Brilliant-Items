@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "brilliant_items.mixin",
+  "refmap": "mixins.brilliant_items.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "vanilla.RenderEntityItemMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}
