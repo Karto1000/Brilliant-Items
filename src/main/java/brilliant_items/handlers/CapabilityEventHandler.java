@@ -32,30 +32,24 @@ public class CapabilityEventHandler {
         boolean shouldShineForRareItem = ForgeConfigHandler.client.SHOULD_RARITY_INFLUENCE_COLOR &&
                 stack.getItem().getForgeRarity(stack) != EnumRarity.COMMON;
 
+        ItemEffectsProvider provider = new ItemEffectsProvider();
+        ItemEffects effects = provider.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
+        // This should never be null
+        assert effects != null;
+
         if (stack.getItem() instanceof IHasEffects) {
             IHasEffects effectHaver = (IHasEffects) stack.getItem();
-
-            ItemEffectsProvider provider = new ItemEffectsProvider();
-            ItemEffects effects = provider.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
-            if (effects == null) return;
-
-            for (IBrilliantItemEffect effect : effectHaver.getEffects(stack)) effects.addEffect(effect);
-
-            event.addCapability(CAP_KEY, provider);
+            for (IBrilliantItemEffect effect : effectHaver.getEffects(stack)) effects.add(effect);
         } else if (shouldShineForRareItem) {
-            ItemEffectsProvider provider = new ItemEffectsProvider();
-            ItemEffects effects = provider.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
-            if (effects == null) return;
-
             char colorChar = stack.getItem().getForgeRarity(stack).getColor().toString().charAt(1);
             int color = Minecraft.getMinecraft().fontRenderer.getColorCode(colorChar) | 0x55000000;
 
             Random rand = new Random((long) stack.hashCode() * stack.hashCode());
             float height = rand.nextFloat() / 2 + 1.5F;
-            effects.addEffect(new GlowPillarEffect(0.3F, height, color));
-            effects.addEffect(new PinwheelEffect(0.75F, 0.75F, color));
-
-            event.addCapability(CAP_KEY, provider);
+            effects.add(new GlowPillarEffect(0.3F, height, color));
+            effects.add(new PinwheelEffect(0.75F, 0.75F, color));
         }
+
+        event.addCapability(CAP_KEY, provider);
     }
 }
