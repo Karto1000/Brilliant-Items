@@ -18,14 +18,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @SideOnly(Side.CLIENT)
-public class BrilliantItemRendererHandler extends Render<EntityItem> {
+public class BrilliantItemRenderHandler extends Render<EntityItem> {
     @Nonnull
     private final RenderEntityItem vanillaRenderEntityItem;
 
     @Nonnull
     private final RenderItem vanillaRenderItem;
 
-    public BrilliantItemRendererHandler(@Nonnull RenderManager manager) {
+    public BrilliantItemRenderHandler(@Nonnull RenderManager manager) {
         super(manager);
 
         Minecraft mc = Minecraft.getMinecraft();

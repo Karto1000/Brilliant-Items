@@ -11,6 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemRenderHandler implements IRenderFactory<EntityItem> {
     @Override
     public Render<? super EntityItem> createRenderFor(RenderManager manager) {
-        return new BrilliantItemRendererHandler(manager);
+        return new BrilliantItemRenderHandler(manager);
     }
 }

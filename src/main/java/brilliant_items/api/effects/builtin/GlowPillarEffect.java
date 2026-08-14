@@ -30,14 +30,38 @@ public class GlowPillarEffect implements IBrilliantItemEffect {
             "textures/glow_pillar.png"
     );
 
-    private final int color;
-    private final float width;
-    private final float height;
+    private int color;
+    private float width;
+    private float height;
 
     public GlowPillarEffect(float width, float height, int color) {
         this.width = width;
         this.height = height;
         this.color = color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
     @Override
@@ -51,10 +75,10 @@ public class GlowPillarEffect implements IBrilliantItemEffect {
             double z,
             float partialTicks
     ) {
-        float glowPillarA = (float) (this.color >> 24 & 255) / 255;
-        float glowPillarR = (float) (this.color >> 16 & 255) / 255;
-        float glowPillarG = (float) (this.color >> 8 & 255) / 255;
-        float glowPillarB = (float) (this.color & 255) / 255;
+        float glowPillarA = (float) (this.getColor() >> 24 & 255) / 255;
+        float glowPillarR = (float) (this.getColor() >> 16 & 255) / 255;
+        float glowPillarG = (float) (this.getColor() >> 8 & 255) / 255;
+        float glowPillarB = (float) (this.getColor() & 255) / 255;
 
         if (glowPillarA > 0) {
             float glowPillarWidth = this.width;

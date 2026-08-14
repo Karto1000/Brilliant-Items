@@ -29,14 +29,38 @@ public class PinwheelEffect implements IBrilliantItemEffect {
             BrilliantItems.MODID,
             "textures/pinwheel.png"
     );
-    private final float width;
-    private final float height;
-    private final int color;
+    private float width;
+    private float height;
+    private int color;
 
     public PinwheelEffect(float width, float height, int color) {
         this.width = width;
         this.height = height;
         this.color = color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public int getColor() {
+        return color;
     }
 
     /// Called each frame before the item is rendered
@@ -60,10 +84,10 @@ public class PinwheelEffect implements IBrilliantItemEffect {
             double z,
             float partialTicks
     ) {
-        float pinwheelA = (float) (this.color >> 24 & 255) / 255;
-        float pinwheelR = (float) (this.color >> 16 & 255) / 255;
-        float pinwheelG = (float) (this.color >> 8 & 255) / 255;
-        float pinwheelB = (float) (this.color & 255) / 255;
+        float pinwheelA = (float) (this.getColor() >> 24 & 255) / 255;
+        float pinwheelR = (float) (this.getColor() >> 16 & 255) / 255;
+        float pinwheelG = (float) (this.getColor() >> 8 & 255) / 255;
+        float pinwheelB = (float) (this.getColor() & 255) / 255;
 
         if (pinwheelA > 0) {
             ItemStack stack = entity.getItem();
