@@ -1,5 +1,6 @@
 package brilliant_items.proxy;
 
+import brilliant_items.capabilities.ItemEffectsCapability;
 import brilliant_items.handlers.ItemRenderHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityItem;
@@ -25,5 +26,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit() {
         RenderingRegistry.registerEntityRenderingHandler(EntityItem.class, new ItemRenderHandler());
+        ItemEffectsCapability.register();
     }
 }
