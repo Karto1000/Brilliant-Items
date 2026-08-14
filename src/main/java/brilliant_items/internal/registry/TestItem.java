@@ -2,15 +2,14 @@ package brilliant_items.internal.registry;
 
 import brilliant_items.BrilliantItems;
 import brilliant_items.api.IHasEffects;
-import brilliant_items.api.entity_item_effects.IBrilliantEntityItemEffect;
+import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import brilliant_items.api.entity_item_effects.builtin.GlowPillarEffect;
-import brilliant_items.api.item_effects.IBrilliantInventoryEffect;
-import brilliant_items.api.item_effects.builtin.GlowEffect;
+import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
+import brilliant_items.api.inventory_item_effects.builtin.GlowEffect;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import java.time.Duration;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -24,11 +23,11 @@ public class TestItem extends Item implements IHasEffects {
 
     @Nonnull
     @Override
-    public NonNullList<IBrilliantEntityItemEffect> getEntityEffects(ItemStack stack) {
+    public NonNullList<IEntityItemEffect> getEntityEffects(ItemStack stack) {
         Random rand = new Random((long) stack.hashCode() * stack.hashCode());
         float height = rand.nextFloat() / 2 + 1.5F;
 
-        NonNullList<IBrilliantEntityItemEffect> effects = NonNullList.create();
+        NonNullList<IEntityItemEffect> effects = NonNullList.create();
         effects.add(new GlowPillarEffect(0.3F, height, 0xFFFFD700));
 
         return effects;
@@ -36,7 +35,7 @@ public class TestItem extends Item implements IHasEffects {
 
     @Nonnull
     @Override
-    public NonNullList<IBrilliantInventoryEffect> getInventoryEffects(ItemStack stack) {
+    public NonNullList<IInventoryItemEffect> getInventoryEffects(ItemStack stack) {
         NonNullList<Integer> colors = NonNullList.create();
         colors.add(0xAAFFD700);
         colors.add(0xAAFFFFFF);

@@ -1,4 +1,4 @@
-package brilliant_items.api.item_effects;
+package brilliant_items.api.inventory_item_effects;
 
 import brilliant_items.internal.rendering.ShaderNotFoundException;
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 import java.nio.FloatBuffer;
 
 @SideOnly(Side.CLIENT)
-public interface IBrilliantInventoryEffect {
+public interface IInventoryItemEffect {
     /// Should return the OpenGL id referencing the shader program
     ///
     /// @return The shader program id

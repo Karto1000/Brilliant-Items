@@ -1,4 +1,4 @@
-package brilliant_items.internal.rendering;
+package brilliant_items.api.inventory_item_effects;
 
 import brilliant_items.BrilliantItems;
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @SideOnly(Side.CLIENT)
-public class ItemEffectShaderManager {
+public class InventoryItemEffectShaderManager {
     private final static HashMap<String, Integer> shaderPrograms = new HashMap<>();
 
     private static int getShaderIdOfShaderLoader(ShaderLoader loader) {

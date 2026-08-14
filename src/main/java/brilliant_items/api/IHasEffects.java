@@ -1,8 +1,7 @@
 package brilliant_items.api;
 
-import brilliant_items.api.entity_item_effects.IBrilliantEntityItemEffect;
-import brilliant_items.api.item_effects.IBrilliantInventoryEffect;
-import net.minecraft.item.Item;
+import brilliant_items.api.entity_item_effects.IEntityItemEffect;
+import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +18,7 @@ public interface IHasEffects {
     /// @param stack The ItemStack
     /// @return A list of effects
     @Nonnull
-    default NonNullList<IBrilliantEntityItemEffect> getEntityEffects(ItemStack stack) {
+    default NonNullList<IEntityItemEffect> getEntityEffects(ItemStack stack) {
         return NonNullList.create();
     }
 
@@ -29,7 +28,7 @@ public interface IHasEffects {
     /// @param stack The ItemStack
     /// @return A list of effects
     @Nonnull
-    default NonNullList<IBrilliantInventoryEffect> getInventoryEffects(ItemStack stack) {
+    default NonNullList<IInventoryItemEffect> getInventoryEffects(ItemStack stack) {
         return NonNullList.create();
     }
 }

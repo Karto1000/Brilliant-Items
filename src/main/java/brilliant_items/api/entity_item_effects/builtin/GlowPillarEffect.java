@@ -1,7 +1,7 @@
 package brilliant_items.api.entity_item_effects.builtin;
 
 import brilliant_items.BrilliantItems;
-import brilliant_items.api.entity_item_effects.IBrilliantEntityItemEffect;
+import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 @Setter
 @Getter
 @SideOnly(Side.CLIENT)
-public class GlowPillarEffect implements IBrilliantEntityItemEffect {
+public class GlowPillarEffect implements IEntityItemEffect {
     private static final ResourceLocation GLOW_PILLAR_TEXTURE = new ResourceLocation(
             BrilliantItems.MODID,
             "textures/glow_pillar.png"

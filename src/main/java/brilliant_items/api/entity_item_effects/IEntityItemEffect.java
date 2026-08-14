@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
-public interface IBrilliantEntityItemEffect {
+public interface IEntityItemEffect {
     /// Called at the end of each frame
     ///
     /// @param entity                  The Entity item to be rendered

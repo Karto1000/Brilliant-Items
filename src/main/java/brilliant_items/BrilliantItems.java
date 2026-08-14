@@ -18,7 +18,7 @@ public class BrilliantItems {
     public static final Logger LOGGER = LogManager.getLogger();
     public static boolean completedLoading = false;
 
-    @SidedProxy(clientSide = "brilliant_items.proxy.ClientProxy", serverSide = "brilliant_items.proxy.CommonProxy")
+    @SidedProxy(clientSide = "brilliant_items.internal.proxy.ClientProxy", serverSide = "brilliant_items.internal.proxy.CommonProxy")
     public static CommonProxy PROXY;
 
     @Instance(MODID)

@@ -1,7 +1,7 @@
-package brilliant_items.api.item_effects.builtin;
+package brilliant_items.api.inventory_item_effects.builtin;
 
-import brilliant_items.api.item_effects.IBrilliantInventoryEffect;
-import brilliant_items.internal.rendering.ItemEffectShaderManager;
+import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
+import brilliant_items.api.inventory_item_effects.InventoryItemEffectShaderManager;
 import brilliant_items.internal.rendering.ShaderNotFoundException;
 import brilliant_items.internal.util.ColorUtil;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 @SideOnly(Side.CLIENT)
-public class GlowEffect implements IBrilliantInventoryEffect {
+public class GlowEffect implements IInventoryItemEffect {
     public static final String GLOW_SHADER_DESIGNATION = "glow";
     private final NonNullList<Integer> colors;
     private final Duration transitionDuration;
@@ -45,7 +45,7 @@ public class GlowEffect implements IBrilliantInventoryEffect {
     /// @return The shader program id
     @Override
     public int getShaderProgramId() throws ShaderNotFoundException {
-        Optional<Integer> id = ItemEffectShaderManager.getProgramId(GLOW_SHADER_DESIGNATION);
+        Optional<Integer> id = InventoryItemEffectShaderManager.getProgramId(GLOW_SHADER_DESIGNATION);
         return id.orElseThrow(() -> new ShaderNotFoundException("No Shader program"));
     }
 
@@ -58,7 +58,7 @@ public class GlowEffect implements IBrilliantInventoryEffect {
             int x,
             int y
     ) {
-        IBrilliantInventoryEffect.super.renderPass(tessellator, buffer, player, stack, x, y);
+        IInventoryItemEffect.super.renderPass(tessellator, buffer, player, stack, x, y);
         ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
 
         int programId = this.getShaderProgramId();

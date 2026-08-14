@@ -1,6 +1,6 @@
 package brilliant_items.internal.handlers;
 
-import brilliant_items.api.entity_item_effects.IBrilliantEntityItemEffect;
+import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
 import net.minecraft.client.Minecraft;
@@ -63,7 +63,7 @@ public class ItemEntityRenderHandler {
             double y = (entityItem.lastTickPosY + (entityItem.posY - entityItem.lastTickPosY) * partialTicks) - cameraY;
             double z = (entityItem.lastTickPosZ + (entityItem.posZ - entityItem.lastTickPosZ) * partialTicks) - cameraZ;
 
-            for (IBrilliantEntityItemEffect effect : cap.getEntityEffects()) {
+            for (IEntityItemEffect effect : cap.getEntityEffects()) {
                 effect.renderPass(
                         entityItem,
                         manager,

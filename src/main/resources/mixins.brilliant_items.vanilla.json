@@ -1,12 +1,12 @@
 {
   "required": true,
-  "package": "brilliant_items.mixin",
+  "package": "brilliant_items.internal.mixin",
   "refmap": "mixins.brilliant_items.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "brilliant_items.internal.mixin.vanilla.RenderItemMixin"
+    "vanilla.RenderItemMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

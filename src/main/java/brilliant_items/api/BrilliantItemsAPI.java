@@ -1,8 +1,8 @@
 package brilliant_items.api;
 
 import brilliant_items.BrilliantItems;
-import brilliant_items.api.entity_item_effects.IBrilliantEntityItemEffect;
-import brilliant_items.api.item_effects.IBrilliantInventoryEffect;
+import brilliant_items.api.entity_item_effects.IEntityItemEffect;
+import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ public class BrilliantItemsAPI {
     ///
     /// @param stack  The ItemStack
     /// @param effect The Instance of the entity effect
-    public static void addEffectTo(@Nonnull ItemStack stack, @Nonnull IBrilliantEntityItemEffect effect) {
+    public static void addEffectTo(@Nonnull ItemStack stack, @Nonnull IEntityItemEffect effect) {
         if (stack.isEmpty()) return;
 
         ItemEffects effects = stack.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
@@ -36,7 +36,7 @@ public class BrilliantItemsAPI {
     ///
     /// @param stack  The ItemStack
     /// @param effect The Instance of the inventory effect
-    public static void addEffectTo(@Nonnull ItemStack stack, @Nonnull IBrilliantInventoryEffect effect) {
+    public static void addEffectTo(@Nonnull ItemStack stack, @Nonnull IInventoryItemEffect effect) {
         if (stack.isEmpty()) return;
 
         ItemEffects effects = stack.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
@@ -55,7 +55,7 @@ public class BrilliantItemsAPI {
     ///
     /// @param stack  The ItemStack
     /// @param effect The Instance of the entity effect
-    public static void removeEffectFrom(@Nonnull ItemStack stack, @Nonnull IBrilliantEntityItemEffect effect) {
+    public static void removeEffectFrom(@Nonnull ItemStack stack, @Nonnull IEntityItemEffect effect) {
         if (stack.isEmpty()) return;
 
         ItemEffects effects = stack.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
@@ -74,7 +74,7 @@ public class BrilliantItemsAPI {
     ///
     /// @param stack  The ItemStack
     /// @param effect The Instance of the inventory effect
-    public static void removeEffectFrom(@Nonnull ItemStack stack, @Nonnull IBrilliantInventoryEffect effect) {
+    public static void removeEffectFrom(@Nonnull ItemStack stack, @Nonnull IInventoryItemEffect effect) {
         if (stack.isEmpty()) return;
 
         ItemEffects effects = stack.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);

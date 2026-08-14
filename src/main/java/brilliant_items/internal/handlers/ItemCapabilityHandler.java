@@ -2,9 +2,9 @@ package brilliant_items.internal.handlers;
 
 import brilliant_items.BrilliantItems;
 import brilliant_items.api.IHasEffects;
-import brilliant_items.api.entity_item_effects.IBrilliantEntityItemEffect;
+import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import brilliant_items.api.entity_item_effects.builtin.DynamicRarityEffect;
-import brilliant_items.api.item_effects.IBrilliantInventoryEffect;
+import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
 import brilliant_items.internal.capabilities.ItemEffectsProvider;
@@ -33,8 +33,8 @@ public class ItemCapabilityHandler {
         if (stack.getItem() instanceof IHasEffects) {
             IHasEffects effectHaver = (IHasEffects) stack.getItem();
 
-            for (IBrilliantEntityItemEffect effect : effectHaver.getEntityEffects(stack)) effects.add(effect);
-            for (IBrilliantInventoryEffect effect : effectHaver.getInventoryEffects(stack)) effects.add(effect);
+            for (IEntityItemEffect effect : effectHaver.getEntityEffects(stack)) effects.add(effect);
+            for (IInventoryItemEffect effect : effectHaver.getInventoryEffects(stack)) effects.add(effect);
         } else {
             Random rand = new Random((long) stack.hashCode() * stack.hashCode());
             float height = rand.nextFloat() / 2 + 1.5F;

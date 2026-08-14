@@ -1,6 +1,6 @@
 package brilliant_items.internal.mixin.vanilla;
 
-import brilliant_items.api.item_effects.IBrilliantInventoryEffect;
+import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import brilliant_items.internal.rendering.InventoryEffectFramebuffer;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
@@ -100,7 +100,7 @@ public class RenderItemMixin {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
 
-        for (IBrilliantInventoryEffect effect : effects.getInventoryEffects()) {
+        for (IInventoryItemEffect effect : effects.getInventoryEffects()) {
             effect.renderPass(tessellator, buffer, player, stack, x, y);
             ARBShaderObjects.glUseProgramObjectARB(0);
         }

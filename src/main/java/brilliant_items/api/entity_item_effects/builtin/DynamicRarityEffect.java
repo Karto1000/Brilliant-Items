@@ -1,6 +1,6 @@
 package brilliant_items.api.entity_item_effects.builtin;
 
-import brilliant_items.api.entity_item_effects.IBrilliantEntityItemEffect;
+import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import brilliant_items.internal.handlers.ForgeConfigHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
-public class DynamicRarityEffect implements IBrilliantEntityItemEffect {
+public class DynamicRarityEffect implements IEntityItemEffect {
     private final GlowPillarEffect pillarEffect = new GlowPillarEffect(0.3F, 1.5F, 0x00000000);
     private final PinwheelEffect pinwheelEffect = new PinwheelEffect(0.75F, 0.75F, 0x00000000);
 
