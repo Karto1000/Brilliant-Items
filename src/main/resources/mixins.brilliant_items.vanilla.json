@@ -6,7 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.RenderEntityItemMixin"
+    "brilliant_items.internal.mixin.vanilla.RenderItemMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

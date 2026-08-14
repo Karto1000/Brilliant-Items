@@ -53,6 +53,9 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    compileOnly "org.projectlombok:lombok:${lombok_version}"
+    annotationProcessor "org.projectlombok:lombok:${lombok_version}"
+
     compileOnly "org.spongepowered:mixin:${mixin_version}"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     compileOnly "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
