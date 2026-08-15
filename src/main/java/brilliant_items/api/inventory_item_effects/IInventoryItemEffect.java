@@ -9,12 +9,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
-import java.nio.FloatBuffer;
 
 @SideOnly(Side.CLIENT)
 public interface IInventoryItemEffect {
@@ -29,15 +26,17 @@ public interface IInventoryItemEffect {
     /// @param buffer      The Buffer Instance
     /// @param player      The current player
     /// @param stack       The stack the effect is applied to
-    /// @param x           The local gui x position
-    /// @param y           The local gui y position
+    /// @param uvs         The uv coordinates of the texture in the framebuffer
+    /// @param localPos    The local position of the item in the current gui container
+    /// @param absolutePos The absolute position of the item on the entire screen
     default void renderPass(
             @Nonnull Tessellator tessellator,
             @Nonnull BufferBuilder buffer,
             @Nonnull EntityLivingBase player,
             @Nonnull ItemStack stack,
-            int x,
-            int y
+            @Nonnull AbsoluteItemTextureUV uvs,
+            @Nonnull LocalItemCoordinates localPos,
+            @Nonnull AbsoluteItemCoordinates absolutePos
     ) {
         int programId = this.getShaderProgramId();
         ARBShaderObjects.glUseProgramObjectARB(programId);
@@ -45,17 +44,11 @@ public interface IInventoryItemEffect {
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution res = new ScaledResolution(mc);
 
-        int itemPosUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_itemPosition");
+        int itemPosUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_absoluteItemPosition");
         int textureUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_texture");
         int scaledScreenSizeUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_scaledScreenSize");
 
-        if (itemPosUniform != -1) {
-            FloatBuffer MATRIX_BUFFER = BufferUtils.createFloatBuffer(16);
-            GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, MATRIX_BUFFER);
-            float translateX = MATRIX_BUFFER.get(12);
-            float translateY = MATRIX_BUFFER.get(13);
-            ARBShaderObjects.glUniform2fARB(itemPosUniform, x + translateX, y + translateY);
-        }
+        if (itemPosUniform != -1) ARBShaderObjects.glUniform2fARB(itemPosUniform, absolutePos.left, absolutePos.top);
         if (textureUniform != -1) ARBShaderObjects.glUniform1iARB(textureUniform, 0);
         if (scaledScreenSizeUniform != -1)
             ARBShaderObjects.glUniform2fARB(scaledScreenSizeUniform, res.getScaledWidth(), res.getScaledHeight());

@@ -1,7 +1,7 @@
 #version 120
 
 uniform sampler2D u_texture;
-uniform vec2 u_itemPosition;
+uniform vec2 u_absoluteItemPosition;
 uniform vec2 u_scaledScreenSize;
 uniform vec4 u_color;
 
@@ -10,7 +10,7 @@ void main() {
 
     if (texColor.a == 0) {
         vec2 pixelPos = vec2(gl_TexCoord[0].s, 1.0 - gl_TexCoord[0].t) * u_scaledScreenSize;
-        vec2 center = u_itemPosition + vec2(8.);
+        vec2 center = u_absoluteItemPosition + vec2(8.);
 
         vec2 difference = (pixelPos - center) / vec2(12);
         float dist = length(difference);
@@ -22,5 +22,5 @@ void main() {
         }
     }
 
-    gl_FragColor = texColor;
+    gl_FragColor = vec4(0., 0., 0., 0.);
 }
