@@ -13,14 +13,18 @@ import org.lwjgl.opengl.ARBShaderObjects;
 
 import javax.annotation.Nonnull;
 
+/// An effect that is applied to an item when it is viewed in any inventory
 @SideOnly(Side.CLIENT)
 public interface IInventoryItemEffect {
-    /// Should return the OpenGL id referencing the shader program
+    /// Should return the OpenGL id referencing the shader program.
+    ///
+    /// Return `-1` if you don't need a shader. Make sure, however, that you don't call a
+    /// `IInventoryItemEffect.super.renderPass;` inside your implementation if it is -1
     ///
     /// @return The shader program id
     int getShaderProgramId() throws ShaderNotFoundException;
 
-    /// Runs each frame to render the item in the inventory, including the effect
+    /// Runs each frame to render the effect
     ///
     /// @param tessellator The Tessellator Instance
     /// @param buffer      The Buffer Instance

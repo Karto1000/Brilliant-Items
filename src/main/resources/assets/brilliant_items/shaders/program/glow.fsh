@@ -12,7 +12,7 @@ void main() {
         vec2 pixelPos = vec2(gl_TexCoord[0].s, 1.0 - gl_TexCoord[0].t) * u_scaledScreenSize;
         vec2 center = u_absoluteItemPosition + vec2(8.);
 
-        vec2 difference = (pixelPos - center) / vec2(12);
+        vec2 difference = (pixelPos - center) / vec2(8);
         float dist = length(difference);
         float alpha = clamp(1.0 - dist, 0.0, 1.0);
 

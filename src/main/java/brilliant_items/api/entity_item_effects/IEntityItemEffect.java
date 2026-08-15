@@ -9,6 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
+/// An effect that is applied to an item when it is present as an entity in the world
 @SideOnly(Side.CLIENT)
 public interface IEntityItemEffect {
     /// Called at the end of each frame
