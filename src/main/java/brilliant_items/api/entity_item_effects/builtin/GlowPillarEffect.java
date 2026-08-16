@@ -1,9 +1,11 @@
 package brilliant_items.api.entity_item_effects.builtin;
 
 import brilliant_items.BrilliantItems;
+import brilliant_items.api.ReferencableEffect;
 import brilliant_items.api.entity_item_effects.IEntityItemEffect;
-import lombok.Getter;
-import lombok.Setter;
+import brilliant_items.internal.config.HexColorAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import lombok.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -28,20 +30,35 @@ import javax.annotation.Nonnull;
 @Setter
 @Getter
 @SideOnly(Side.CLIENT)
+@ReferencableEffect(identifier = "glow_pillar", argumentsClass = GlowPillarEffect.Args.class)
 public class GlowPillarEffect implements IEntityItemEffect {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Args {
+        /// The color of the glow pillar
+        @Builder.Default
+        @JsonAdapter(HexColorAdapter.class)
+        public int color = 0xFFFFFFFF;
+
+        /// The width of the glow pillar
+        @Builder.Default
+        public float width = 0.3F;
+
+        /// The height of the glow pillar
+        @Builder.Default
+        public float height = 1.5F;
+    }
+
     private static final ResourceLocation GLOW_PILLAR_TEXTURE = new ResourceLocation(
             BrilliantItems.MODID,
             "textures/glow_pillar.png"
     );
+    private final Args options;
 
-    private int color;
-    private float width;
-    private float height;
 
-    public GlowPillarEffect(float width, float height, int color) {
-        this.width = width;
-        this.height = height;
-        this.color = color;
+    public GlowPillarEffect(Args args) {
+        this.options = args;
     }
 
     @Override
@@ -55,14 +72,14 @@ public class GlowPillarEffect implements IEntityItemEffect {
             double z,
             float partialTicks
     ) {
-        float glowPillarA = (float) (this.getColor() >> 24 & 255) / 255;
-        float glowPillarR = (float) (this.getColor() >> 16 & 255) / 255;
-        float glowPillarG = (float) (this.getColor() >> 8 & 255) / 255;
-        float glowPillarB = (float) (this.getColor() & 255) / 255;
+        float glowPillarA = (float) (this.options.color >> 24 & 255) / 255;
+        float glowPillarR = (float) (this.options.color >> 16 & 255) / 255;
+        float glowPillarG = (float) (this.options.color >> 8 & 255) / 255;
+        float glowPillarB = (float) (this.options.color & 255) / 255;
 
         if (glowPillarA > 0) {
-            float glowPillarWidth = this.width;
-            float glowPillarHeight = this.height;
+            float glowPillarWidth = this.options.width;
+            float glowPillarHeight = this.options.height;
             float bobYValue = vanillaRenderEntityItem.shouldBob()
                     ? MathHelper.sin(((float) entity.getAge() + partialTicks) / 10.0F + entity.hoverStart) * 0.1F + 0.1F
                     : 0;

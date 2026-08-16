@@ -1,9 +1,11 @@
 package brilliant_items.api.entity_item_effects.builtin;
 
 import brilliant_items.BrilliantItems;
+import brilliant_items.api.ReferencableEffect;
 import brilliant_items.api.entity_item_effects.IEntityItemEffect;
-import lombok.Getter;
-import lombok.Setter;
+import brilliant_items.internal.config.HexColorAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import lombok.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -24,23 +26,42 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.validation.constraints.Min;
 
 @Setter
 @Getter
 @SideOnly(Side.CLIENT)
+@ReferencableEffect(identifier = "pinwheel", argumentsClass = PinwheelEffect.Args.class)
 public class PinwheelEffect implements IEntityItemEffect {
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Args {
+        /// The color of the pinwheel
+        @Builder.Default
+        @JsonAdapter(HexColorAdapter.class)
+        public int color = 0xFFFFFFFF;
+
+        /// The width of the pinwheel in blocks
+        @Builder.Default
+        @Min(0)
+        public float width = 0.75F;
+
+        /// The height of the pinwheel in blocks
+        @Builder.Default
+        @Min(0)
+        public float height = 0.75F;
+    }
+
     private final static ResourceLocation PINWHEEL_TEXTURE = new ResourceLocation(
             BrilliantItems.MODID,
             "textures/pinwheel.png"
     );
-    private float width;
-    private float height;
-    private int color;
+    private final Args options;
 
-    public PinwheelEffect(float width, float height, int color) {
-        this.width = width;
-        this.height = height;
-        this.color = color;
+    public PinwheelEffect(PinwheelEffect.Args args) {
+        this.options = args;
     }
 
     /// Called each frame before the item is rendered
@@ -64,10 +85,10 @@ public class PinwheelEffect implements IEntityItemEffect {
             double z,
             float partialTicks
     ) {
-        float pinwheelA = (float) (this.getColor() >> 24 & 255) / 255;
-        float pinwheelR = (float) (this.getColor() >> 16 & 255) / 255;
-        float pinwheelG = (float) (this.getColor() >> 8 & 255) / 255;
-        float pinwheelB = (float) (this.getColor() & 255) / 255;
+        float pinwheelA = (float) (this.options.color >> 24 & 255) / 255;
+        float pinwheelR = (float) (this.options.color >> 16 & 255) / 255;
+        float pinwheelG = (float) (this.options.color >> 8 & 255) / 255;
+        float pinwheelB = (float) (this.options.color & 255) / 255;
 
         if (pinwheelA > 0) {
             ItemStack stack = entity.getItem();
@@ -91,8 +112,8 @@ public class PinwheelEffect implements IEntityItemEffect {
             float minProd = 0.99F;
             boolean isLookingAtItem = dotP > minProd;
 
-            float pinwheelWidth = this.width;
-            float pinwheelHeight = this.height;
+            float pinwheelWidth = this.options.width;
+            float pinwheelHeight = this.options.height;
             if (isLookingAtItem) pinwheelWidth = pinwheelWidth + ((float) dotP - minProd) * 20;
             if (isLookingAtItem) pinwheelHeight = pinwheelHeight + ((float) dotP - minProd) * 20;
 
@@ -152,7 +173,10 @@ public class PinwheelEffect implements IEntityItemEffect {
             GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
             GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            GlStateManager.blendFunc(
+                    GlStateManager.SourceFactor.SRC_ALPHA,
+                    GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
+            );
             GlStateManager.enableCull();
             GlStateManager.enableLighting();
 

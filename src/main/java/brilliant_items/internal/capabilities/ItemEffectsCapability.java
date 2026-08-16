@@ -15,7 +15,7 @@ public class ItemEffectsCapability {
     @CapabilityInject(ItemEffects.class)
     public static Capability<ItemEffects> ITEM_EFFECTS_CAPABILITY = null;
 
-    public static void register() {
+    public static void init() {
         // We don't need to store anything here because this is all client-side
         CapabilityManager.INSTANCE.register(
                 ItemEffects.class,

@@ -8,6 +8,9 @@ import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
 import brilliant_items.internal.capabilities.ItemEffectsProvider;
+import brilliant_items.internal.config.JsonConfig;
+import brilliant_items.internal.config.JsonConfigManager;
+import brilliant_items.internal.registry.EffectRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -15,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = BrilliantItems.MODID, value = Side.CLIENT)
@@ -27,10 +31,51 @@ public class ItemCapabilityHandler {
 
         ItemEffectsProvider provider = new ItemEffectsProvider();
         ItemEffects effects = provider.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
-        // This should never be null
-        assert effects != null;
+        if (effects == null) return;
 
-        if (stack.getItem() instanceof IHasEffects) {
+        ResourceLocation registryName = stack.getItem().getRegistryName();
+        // We have a custom-defined effect in the config
+        if (JsonConfigManager.config.mappings.containsKey(registryName)) {
+            JsonConfig.ItemMapping itemMapping = JsonConfigManager.config.mappings.get(registryName);
+
+            for (JsonConfig.EffectMapping entityEffect : itemMapping.entityEffects) {
+                Optional<? extends IEntityItemEffect> effectO = EffectRegistry.createEntityItemEffect(
+                        entityEffect.identifier,
+                        entityEffect.arguments
+                );
+
+                if (!effectO.isPresent()) {
+                    BrilliantItems.LOGGER.error(
+                            "Could not create entity effect '{}' with the specified arguments '{}'",
+                            entityEffect.identifier,
+                            entityEffect.arguments
+                    );
+                    continue;
+                }
+
+                IEntityItemEffect effect = effectO.get();
+                effects.add(effect);
+            }
+
+            for (JsonConfig.EffectMapping inventoryEffect : itemMapping.inventoryEffects) {
+                Optional<? extends IInventoryItemEffect> effectO = EffectRegistry.createInventoryItemEffect(
+                        inventoryEffect.identifier,
+                        inventoryEffect.arguments
+                );
+
+                if (!effectO.isPresent()) {
+                    BrilliantItems.LOGGER.error(
+                            "Could not create inventory effect '{}' with the specified arguments '{}'",
+                            inventoryEffect.identifier,
+                            inventoryEffect.arguments
+                    );
+                    continue;
+                }
+
+                IInventoryItemEffect effect = effectO.get();
+                effects.add(effect);
+            }
+        } else if (stack.getItem() instanceof IHasEffects) {
             IHasEffects effectHaver = (IHasEffects) stack.getItem();
 
             for (IEntityItemEffect effect : effectHaver.getEntityEffects(stack)) effects.add(effect);

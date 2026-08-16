@@ -1,4 +1,4 @@
-package brilliant_items.internal.handlers;
+package brilliant_items.internal.config;
 
 import brilliant_items.BrilliantItems;
 import net.minecraftforge.common.config.Config;
@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = BrilliantItems.MODID)
-public class ForgeConfigHandler {
+public class ForgeConfigManager {
 
     @Config.Comment("Client-Side Options")
     @Config.Name("Client Options")

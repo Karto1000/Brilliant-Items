@@ -1,5 +1,6 @@
 package brilliant_items.api.inventory_item_effects;
 
+import brilliant_items.api.IEffect;
 import brilliant_items.internal.rendering.ShaderNotFoundException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -15,7 +16,7 @@ import javax.annotation.Nonnull;
 
 /// An effect that is applied to an item when it is viewed in any inventory
 @SideOnly(Side.CLIENT)
-public interface IInventoryItemEffect {
+public interface IInventoryItemEffect extends IEffect {
     /// Should return the OpenGL id referencing the shader program.
     ///
     /// Return `-1` if you don't need a shader. Make sure, however, that you don't call a

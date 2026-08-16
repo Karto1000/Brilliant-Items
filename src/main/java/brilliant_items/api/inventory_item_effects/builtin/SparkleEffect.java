@@ -1,13 +1,17 @@
 package brilliant_items.api.inventory_item_effects.builtin;
 
 import brilliant_items.BrilliantItems;
+import brilliant_items.api.ReferencableEffect;
 import brilliant_items.api.inventory_item_effects.AbsoluteItemCoordinates;
 import brilliant_items.api.inventory_item_effects.AbsoluteItemTextureUV;
 import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import brilliant_items.api.inventory_item_effects.LocalItemCoordinates;
+import brilliant_items.internal.config.HexColorAdapter;
 import brilliant_items.internal.rendering.ShaderNotFoundException;
 import brilliant_items.internal.util.ColorUtil;
+import com.google.gson.annotations.JsonAdapter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -18,33 +22,64 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec2f;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.validation.constraints.Min;
 import java.util.Random;
 
+@SideOnly(Side.CLIENT)
+@ReferencableEffect(identifier = "sparkle", argumentsClass = SparkleEffect.Args.class)
 public class SparkleEffect implements IInventoryItemEffect {
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Args {
+        /// The minimum lifetime in frames
+        @Min(0)
+        @Builder.Default
+        public int minLifetime = 800;
+
+        /// The maximum lifetime in frames
+        @Min(0)
+        @Builder.Default
+        public int maxLifetime = 2000;
+
+        /// The velocity of the particle
+        @Nonnull
+        @Builder.Default
+        public Vec2f velocity = Vec2f.ZERO;
+
+        /// The color of the particle
+        @JsonAdapter(HexColorAdapter.class)
+        @Builder.Default
+        public int color = 0xFFFFFFFF;
+
+        /// The amount of particles always present over the item
+        @Min(0)
+        @Builder.Default
+        public int amountOfSparkles = 3;
+
+        /// The size of the particle
+        @Min(0)
+        @Builder.Default
+        public float size = 2.5F;
+
+        /// The texture of the particle
+        @Nonnull
+        @Builder.Default
+        public ResourceLocation texture = DEFAULT_PARTICLE_TEXTURE;
+    }
+
     private static final ResourceLocation DEFAULT_PARTICLE_TEXTURE = new ResourceLocation(
             BrilliantItems.MODID,
             "textures/particles/glow.png"
     );
-    private final SparkleEffectOptions options;
+    private final Args options;
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class SparkleEffectOptions {
-        /// The minimum lifetime in frames
-        public int minLifetime = 800;
-        /// The maximum lifetime in frames
-        public int maxLifetime = 2000;
-        public Vec2f velocity = Vec2f.ZERO;
-        public int color = 0xFFFFFFFF;
-        public int amountOfSparkles = 3;
-        public float size = 2.5F;
-        public ResourceLocation texture = DEFAULT_PARTICLE_TEXTURE;
-    }
-
-    public SparkleEffect(SparkleEffectOptions options) {
+    public SparkleEffect(Args options) {
         this.options = options;
     }
 
@@ -69,7 +104,7 @@ public class SparkleEffect implements IInventoryItemEffect {
     ) {
         long time = Minecraft.getSystemTime();
 
-        long baseSeed = (long) (localPos.left * 137.0f) ^ (long) (localPos.top * 149.0f);
+        long baseSeed = (long) (stack.hashCode() * 137.0f) ^ (long) (stack.hashCode() * 149.0f);
         Minecraft.getMinecraft().getTextureManager().bindTexture(this.options.texture);
 
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);

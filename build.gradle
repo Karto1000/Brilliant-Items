@@ -6,6 +6,11 @@ plugins {
     id 'wtf.gofancy.fancygradle' version "${fancy_gradle_version}"
 }
 
+configurations {
+    embed
+    implementation.extendsFrom(embed)
+}
+
 version = mod_version
 group = mod_id
 base.archivesName = mod_name
@@ -53,6 +58,10 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    embed "javax.validation:validation-api:2.0.1.Final"
+    embed "org.hibernate.validator:hibernate-validator:6.0.22.Final"
+    embed "org.glassfish:javax.el:3.0.1-b12"
+
     compileOnly "org.projectlombok:lombok:${lombok_version}"
     annotationProcessor "org.projectlombok:lombok:${lombok_version}"
 
@@ -62,7 +71,7 @@ dependencies {
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
 
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
-	
+
     implementation fg.deobf("curse.maven:jei-${jei_version}")
 }
 
@@ -81,12 +90,12 @@ fancyGradle {
 
 processResources {
     var replaceProperties = [
-            'mod_id': mod_id,
-            'mod_name': mod_name,
-            'version': mod_version,
-            'mcversion': minecraft_version,
+            'mod_id'         : mod_id,
+            'mod_name'       : mod_name,
+            'version'        : mod_version,
+            'mcversion'      : minecraft_version,
             'mod_description': mod_description,
-            'mod_author': mod_author
+            'mod_author'     : mod_author
     ]
 
     inputs.properties replaceProperties
@@ -97,18 +106,30 @@ processResources {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from {
+        configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        // Exclude security signatures from third-party jars that break fat-jars
+        exclude 'META-INF/*.SF'
+        exclude 'META-INF/*.RSA'
+        exclude 'META-INF/*.INF'
+        exclude '**/module-info.class'
+    }
+
     manifest {
         def attr = [:]
-        attr['Specification-Title']         = mod_name
-        attr['Specification-Vendor']        = mod_author
-        attr['Specification-Version']       = '1'
-        attr['Implementation-Title']        = mod_name
-        attr['Implementation-Vendor']       = mod_author
-        attr['Implementation-Version']      = mod_version
-        attr['Implementation-Timestamp']    = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        attr['FMLCorePlugin']               = mixin_loader_class
+        attr['Specification-Title'] = mod_name
+        attr['Specification-Vendor'] = mod_author
+        attr['Specification-Version'] = '1'
+        attr['Implementation-Title'] = mod_name
+        attr['Implementation-Vendor'] = mod_author
+        attr['Implementation-Version'] = mod_version
+        attr['Implementation-Timestamp'] = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        attr['FMLCorePlugin'] = mixin_loader_class
         attr['FMLCorePluginContainsFMLMod'] = 'true'
-        attr['TweakClass']                  = 'org.spongepowered.asm.launch.MixinTweaker'
+        attr['TweakClass'] = 'org.spongepowered.asm.launch.MixinTweaker'
         attr['ForceLoadAsMod'] = "true"
 
         def currentTasks = gradle.startParameter.taskNames

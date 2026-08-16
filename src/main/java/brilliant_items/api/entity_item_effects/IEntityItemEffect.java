@@ -1,5 +1,6 @@
 package brilliant_items.api.entity_item_effects;
 
+import brilliant_items.api.IEffect;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -11,7 +12,7 @@ import javax.annotation.Nonnull;
 
 /// An effect that is applied to an item when it is present as an entity in the world
 @SideOnly(Side.CLIENT)
-public interface IEntityItemEffect {
+public interface IEntityItemEffect extends IEffect {
     /// Called at the end of each frame
     ///
     /// @param entity                  The Entity item to be rendered

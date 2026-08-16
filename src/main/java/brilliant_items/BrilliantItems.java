@@ -1,7 +1,6 @@
 package brilliant_items;
 
 import brilliant_items.internal.proxy.CommonProxy;
-import brilliant_items.internal.registry.TestItemRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -27,7 +26,6 @@ public class BrilliantItems {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         BrilliantItems.PROXY.preInit();
-        TestItemRegistry.init();
     }
 
     @Mod.EventHandler
