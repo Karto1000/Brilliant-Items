@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @SideOnly(Side.CLIENT)
-public class InventoryItemEffectShaderManager {
+public class ShaderManager {
     private final static HashMap<String, Integer> shaderPrograms = new HashMap<>();
 
     private static int getShaderIdOfShaderLoader(ShaderLoader loader) {

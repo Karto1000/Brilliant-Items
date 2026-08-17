@@ -1,9 +1,6 @@
 package brilliant_items.internal.mixin.vanilla;
 
-import brilliant_items.api.inventory_item_effects.AbsoluteItemCoordinates;
-import brilliant_items.api.inventory_item_effects.AbsoluteItemTextureUV;
-import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
-import brilliant_items.api.inventory_item_effects.LocalItemCoordinates;
+import brilliant_items.api.inventory_item_effects.*;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
 import brilliant_items.internal.rendering.InventoryEffectFramebuffer;
@@ -204,10 +201,14 @@ public class RenderItemMixin {
         AbsoluteItemCoordinates absoluteItemCoordinates = brilliantItems$getAbsoluteItemCoordinates(localItemCoordinates);
         AbsoluteItemTextureUV texturePosition = brilliantItems$getAbsoluteItemTextureUV(localItemCoordinates);
 
-        // We want to render the item first before applying any effects
-        this.brilliantItems$drawItemTexture(tessellator, buffer, texturePosition, localItemCoordinates);
-
+        boolean behind = true;
         for (IInventoryItemEffect effect : effects.getInventoryEffects()) {
+            if (effect.getRenderMode() == RenderMode.IN_FRONT && behind) {
+                // Here we render the item when the render mode switches from behind to in_front
+                this.brilliantItems$drawItemTexture(tessellator, buffer, texturePosition, localItemCoordinates);
+                behind = false;
+            }
+
             effect.renderPass(
                     tessellator,
                     buffer,
@@ -217,8 +218,12 @@ public class RenderItemMixin {
                     localItemCoordinates,
                     absoluteItemCoordinates
             );
+
             ARBShaderObjects.glUseProgramObjectARB(0);
         }
+
+        // Render the item if we haven't already
+        if (behind) this.brilliantItems$drawItemTexture(tessellator, buffer, texturePosition, localItemCoordinates);
 
         GlStateManager.enableLighting();
         GlStateManager.enableDepth();

@@ -25,8 +25,8 @@ import java.time.Duration;
 import java.util.Optional;
 
 @SideOnly(Side.CLIENT)
-@ReferencableEffect(identifier = "glow", argumentsClass = GlowEffect.Args.class)
-public class GlowEffect implements IInventoryItemEffect {
+@ReferencableEffect(identifier = "radial_glow", argumentsClass = RadialGlowEffect.Args.class)
+public class RadialGlowEffect implements IInventoryItemEffect {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -42,10 +42,10 @@ public class GlowEffect implements IInventoryItemEffect {
         public Duration duration = Duration.ZERO;
     }
 
-    public static final String GLOW_SHADER_DESIGNATION = "glow";
+    public static final String GLOW_SHADER_DESIGNATION = "radialGlow";
     private final Args options;
 
-    public GlowEffect(GlowEffect.Args args) {
+    public RadialGlowEffect(RadialGlowEffect.Args args) {
         this.options = args;
     }
 
@@ -54,7 +54,7 @@ public class GlowEffect implements IInventoryItemEffect {
     /// @return The shader program id
     @Override
     public int getShaderProgramId() throws ShaderNotFoundException {
-        Optional<Integer> id = InventoryItemEffectShaderManager.getProgramId(GLOW_SHADER_DESIGNATION);
+        Optional<Integer> id = ShaderManager.getProgramId(GLOW_SHADER_DESIGNATION);
         return id.orElseThrow(() -> new ShaderNotFoundException("No Shader program"));
     }
 

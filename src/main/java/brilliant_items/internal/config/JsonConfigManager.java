@@ -25,7 +25,7 @@ public class JsonConfigManager {
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .setPrettyPrinting()
             .create();
-    private static final String FILE_NAME = "brilliant_items_bindings.json";
+    public static final String FILE_NAME = "brilliant_items_bindings.json";
     public static final Validator VALIDATOR;
 
     static {

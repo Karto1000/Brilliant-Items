@@ -1,5 +1,6 @@
 package brilliant_items.api.inventory_item_effects;
 
+import brilliant_items.BrilliantItems;
 import brilliant_items.api.IEffect;
 import brilliant_items.internal.rendering.ShaderNotFoundException;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,15 @@ public interface IInventoryItemEffect extends IEffect {
     /// @return The shader program id
     int getShaderProgramId() throws ShaderNotFoundException;
 
+    /// Return a render mode. This decides whether the `renderPass` function should be called before or after the item
+    /// has been rendered
+    ///
+    /// @return The Render Mode
+    @Nonnull
+    default RenderMode getRenderMode() {
+        return RenderMode.IN_FRONT;
+    }
+
     /// Runs each frame to render the effect
     ///
     /// @param tessellator The Tessellator Instance
@@ -43,7 +53,14 @@ public interface IInventoryItemEffect extends IEffect {
             @Nonnull LocalItemCoordinates localPos,
             @Nonnull AbsoluteItemCoordinates absolutePos
     ) {
-        int programId = this.getShaderProgramId();
+        int programId;
+        try {
+            programId = this.getShaderProgramId();
+        } catch (ShaderNotFoundException e) {
+            BrilliantItems.LOGGER.error("Could not find shader for effect", e);
+            return;
+        }
+
         ARBShaderObjects.glUseProgramObjectARB(programId);
 
         Minecraft mc = Minecraft.getMinecraft();

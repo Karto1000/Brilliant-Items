@@ -7,6 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
@@ -45,6 +46,8 @@ public class ItemEffects {
     /// @param effect The inventory effect to add
     public void add(@Nonnull IInventoryItemEffect effect) {
         this.inventoryEffects.add(effect);
+        // We want to sort the list here to keep all the inventory effects with the BEHIND render mode first in the list
+        this.inventoryEffects.sort(Comparator.comparing(IInventoryItemEffect::getRenderMode));
     }
 
     /// Remove a specific instance of an entity effect from this provider
