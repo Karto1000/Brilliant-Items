@@ -2,6 +2,7 @@ package brilliant_items.internal.rendering;
 
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
+import brilliant_items.internal.config.ForgeConfigManager;
 import brilliant_items.internal.handlers.ItemEntityRenderHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
@@ -46,11 +47,14 @@ public class BrilliantItemRenderer extends Render<EntityItem> {
     ) {
         ItemStack stack = entity.getItem();
 
-        if (!entity.isDead && stack.hasCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null)) {
+        boolean isEntityValid = ForgeConfigManager.client.SHOULD_RENDER_ENTITY_ITEM_EFFECTS
+                && !entity.isDead
+                && stack.hasCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
+
+        if (isEntityValid) {
             ItemEffects cap = stack.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
-            if (cap != null && !cap.getEntityEffects().isEmpty()) {
-                ItemEntityRenderHandler.enqueue(entity);
-            }
+            boolean isCapacityValid = cap != null && !cap.getEntityEffects().isEmpty();
+            if (isCapacityValid) ItemEntityRenderHandler.enqueue(entity);
         }
 
         vanillaRenderEntityItem.doRender(entity, x, y, z, entityYaw, partialTicks);

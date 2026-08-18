@@ -58,7 +58,7 @@ public class DynamicRarityEffect implements IEntityItemEffect {
     ) {
         ItemStack stack = entity.getItem();
 
-        if (!ForgeConfigManager.client.SHOULD_RARITY_INFLUENCE_COLOR) return;
+        if (!ForgeConfigManager.client.ASSIGN_EFFECTS_BASED_ON_RARITY) return;
         if (stack.getItem().getForgeRarity(stack) == EnumRarity.COMMON) return;
 
         char colorChar = stack.getItem().getForgeRarity(stack).getColor().toString().charAt(1);

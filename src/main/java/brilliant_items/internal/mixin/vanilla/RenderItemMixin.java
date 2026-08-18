@@ -3,6 +3,7 @@ package brilliant_items.internal.mixin.vanilla;
 import brilliant_items.api.inventory_item_effects.*;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
+import brilliant_items.internal.config.ForgeConfigManager;
 import brilliant_items.internal.rendering.InventoryEffectFramebuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -10,7 +11,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
@@ -21,9 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,6 +46,8 @@ public class RenderItemMixin {
             int y,
             CallbackInfo ci
     ) {
+        if (!ForgeConfigManager.client.SHOULD_RENDER_INVENTORY_EFFECTS) return;
+
         ItemEffects effects = stack.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);
 
         if (effects == null) return;
@@ -145,6 +145,7 @@ public class RenderItemMixin {
             int y,
             CallbackInfo ci
     ) {
+        if (!ForgeConfigManager.client.SHOULD_RENDER_INVENTORY_EFFECTS) return;
         if (brilliantItems$currentTarget == null) return;
         Minecraft mc = Minecraft.getMinecraft();
         mc.getFramebuffer().bindFramebuffer(true);
