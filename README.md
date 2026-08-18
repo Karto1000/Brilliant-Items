@@ -127,7 +127,7 @@ This interface has two methods which you can override. Each Method returns a `No
 To implement a custom inventory effect, you need to create a new class and implement the
 `IInventoryItemEffect` interface.
 
-From there you can define your custom rendering logic in the `renderPass` method. Examples can be found at in
+From there you can define your custom rendering logic in the `renderPass` method. Examples can be found in
 the [Builtin Package](src/main/java/brilliant_items/api/inventory_item_effects/builtin)
 
 ### Entity Effects
@@ -135,7 +135,7 @@ the [Builtin Package](src/main/java/brilliant_items/api/inventory_item_effects/b
 To implement a custom entity effect, you need to create a new class and implement the
 `IEntityItemEffect` interface.
 
-From there you can define your custom rendering logic in the `renderPass` method. Examples can be found at in
+From there you can define your custom rendering logic in the `renderPass` method. Examples can be found in
 the [Builtin Package](src/main/java/brilliant_items/api/entity_item_effects/builtin)
 
 ### Reference your Effect in the Config
