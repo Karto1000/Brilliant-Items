@@ -35,9 +35,6 @@ import java.nio.FloatBuffer;
 @SideOnly(Side.CLIENT)
 @Mixin(RenderItem.class)
 public class RenderItemMixin {
-    @Shadow
-    @Final
-    private TextureManager textureManager;
     @Unique
     private Framebuffer brilliantItems$currentTarget;
     @Unique

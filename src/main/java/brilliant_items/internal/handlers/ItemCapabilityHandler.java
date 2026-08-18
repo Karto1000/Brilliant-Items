@@ -28,6 +28,7 @@ public class ItemCapabilityHandler {
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
         ItemStack stack = event.getObject();
+        if (stack.isEmpty()) return;
 
         ItemEffectsProvider provider = new ItemEffectsProvider();
         ItemEffects effects = provider.getCapability(ItemEffectsCapability.ITEM_EFFECTS_CAPABILITY, null);

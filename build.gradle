@@ -24,7 +24,6 @@ minecraft {
         client {
             args "--username=InDev"
 
-            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
             jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
             jvmArg "-Dmixin.debug.export=true"
@@ -37,7 +36,6 @@ minecraft {
 
         server {
 
-            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
             jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
             jvmArg "-Dmixin.debug.export=true"
@@ -53,30 +51,23 @@ minecraft {
 repositories {
     flatDir { dirs 'libs' }
     maven { url = 'https://www.cursemaven.com' }
+    maven { url = 'https://maven.cleanroommc.com' }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    embed "javax.validation:validation-api:2.0.1.Final"
-    embed "org.hibernate.validator:hibernate-validator:6.0.22.Final"
-    embed "org.glassfish:javax.el:3.0.1-b12"
+    embed "javax.validation:validation-api:${javax_validation_api_version}"
+    embed "org.hibernate.validator:hibernate-validator:${hibernate_validator_version}"
+    embed "org.glassfish:javax.el:${glassfish_el_version}"
 
     compileOnly "org.projectlombok:lombok:${lombok_version}"
     annotationProcessor "org.projectlombok:lombok:${lombok_version}"
 
-    compileOnly "org.spongepowered:mixin:${mixin_version}"
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    compileOnly "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
-    annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
-
-    implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
+    implementation("zone.rong:mixinbooter:${mixinbooter_version}") {transitive = false}
+    annotationProcessor "zone.rong:mixinbooter:${mixinbooter_version}"
 
     implementation fg.deobf("curse.maven:jei-${jei_version}")
-}
-
-mixin {
-    add sourceSets.main, "mixins.${mod_id}.refmap.json"
 }
 
 fancyGradle {
@@ -127,10 +118,7 @@ jar {
         attr['Implementation-Vendor'] = mod_author
         attr['Implementation-Version'] = mod_version
         attr['Implementation-Timestamp'] = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        attr['FMLCorePlugin'] = mixin_loader_class
-        attr['FMLCorePluginContainsFMLMod'] = 'true'
-        attr['TweakClass'] = 'org.spongepowered.asm.launch.MixinTweaker'
-        attr['ForceLoadAsMod'] = "true"
+        attr["MixinConfigs"] = "mixins.brilliant_items.vanilla.json"
 
         def currentTasks = gradle.startParameter.taskNames
         if (currentTasks[0] == 'build' || currentTasks[0] == 'assemble')
@@ -138,20 +126,3 @@ jar {
         attributes(attr)
     }
 }
-
-//This task is only for copying output.jar into run/mods/ so when running indev fermiumbooter finds the jar to check for @MixinConfig annotations
-tasks.register("copyReobfJar", Copy) {
-    dependsOn("reobfJar")
-
-    from(layout.buildDirectory.file("reobfJar/output.jar"))
-    into(layout.projectDirectory.dir("run/mods"))
-    rename("output.jar", "${mod_name}-${mod_version}.jar")
-}
-
-afterEvaluate {
-    tasks.matching { it.name.startsWith("reobfJar") }.configureEach {
-        finalizedBy("copyReobfJar")
-    }
-}
-
-jar.finalizedBy('reobfJar')

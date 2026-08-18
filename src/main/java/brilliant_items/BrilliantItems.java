@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = BrilliantItems.MODID, version = BrilliantItems.VERSION, name = BrilliantItems.NAME, dependencies = "required-after:fermiumbooter")
+@Mod(modid = BrilliantItems.MODID, version = BrilliantItems.VERSION, name = BrilliantItems.NAME, dependencies = "required-after:mixinbooter")
 public class BrilliantItems {
     public static final String MODID = "brilliant_items";
     public static final String VERSION = "0.1.0";
