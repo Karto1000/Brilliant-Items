@@ -5,13 +5,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.ShaderLoader;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Optional;
+
+import static net.minecraftforge.fml.relauncher.ReflectionHelper.getPrivateValue;
 
 @SideOnly(Side.CLIENT)
 public class ShaderManager {
@@ -19,10 +21,12 @@ public class ShaderManager {
 
     private static int getShaderIdOfShaderLoader(ShaderLoader loader) {
         try {
-            Field field = loader.getClass().getDeclaredField("shader");
-            field.setAccessible(true);
-            return field.getInt(loader);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return getPrivateValue(
+                    ShaderLoader.class,
+                    loader,
+                    "shader", "field_148060_c"
+            );
+        } catch (ReflectionHelper.UnableToAccessFieldException e) {
             // This should never fail
             BrilliantItems.LOGGER.error(e);
             throw new RuntimeException(e);
@@ -36,6 +40,12 @@ public class ShaderManager {
     ) throws IOException {
         int programId = createShader(vertexShader, fragmentShader);
         shaderPrograms.put(designation, programId);
+        BrilliantItems.LOGGER.info(
+                "Registered shader with designation '{}' with vertex: '{}' and fragment: '{}'",
+                designation,
+                vertexShader,
+                fragmentShader
+        );
     }
 
     public static Optional<Integer> getProgramId(String designation) {
