@@ -18,7 +18,7 @@ public interface IHasEffects {
     /// @param stack The ItemStack
     /// @return A list of effects
     @Nonnull
-    default NonNullList<IEntityItemEffect> getEntityEffects(ItemStack stack) {
+    default NonNullList<IEntityItemEffect> getEntityEffects(@Nonnull ItemStack stack) {
         return NonNullList.create();
     }
 
@@ -28,7 +28,7 @@ public interface IHasEffects {
     /// @param stack The ItemStack
     /// @return A list of effects
     @Nonnull
-    default NonNullList<IInventoryItemEffect> getInventoryEffects(ItemStack stack) {
+    default NonNullList<IInventoryItemEffect> getInventoryEffects(@Nonnull ItemStack stack) {
         return NonNullList.create();
     }
 }
