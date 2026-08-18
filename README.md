@@ -4,7 +4,8 @@
 </div>
 
 A library for Minecraft 1.12.2 that allows you to give your items more flare. An expansion of the effects in
-the [Brilliant Text](https://github.com/Karto1000/Brilliant-Text) library.
+the [Brilliant Text](https://github.com/Karto1000/Brilliant-Text) library. Inspired by the 'loot beams' the [Loot Beams Retro](https://www.curseforge.com/minecraft/mc-mods/loot-beams-retro)
+and [RGB Chat](https://www.curseforge.com/minecraft/mc-mods/rgb-chat) mods add.
 
 ## How to use
 

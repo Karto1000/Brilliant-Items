@@ -2,6 +2,7 @@ package brilliant_items.internal.proxy;
 
 import brilliant_items.BrilliantItems;
 import brilliant_items.api.BrilliantItemsAPI;
+import brilliant_items.api.entity_item_effects.builtin.BackgroundGlowEffect;
 import brilliant_items.api.entity_item_effects.builtin.GlowPillarEffect;
 import brilliant_items.api.entity_item_effects.builtin.PinwheelEffect;
 import brilliant_items.api.inventory_item_effects.ShaderManager;
@@ -37,7 +38,7 @@ public class ClientProxy extends CommonProxy {
     public void preInit() {
         BrilliantItemsAPI.registerForJSON(
                 RadialGlowEffect.class, SparkleEffect.class, GlowPillarEffect.class,
-                PinwheelEffect.class, GlowOutlineEffect.class
+                PinwheelEffect.class, GlowOutlineEffect.class, BackgroundGlowEffect.class
         );
 
         EntityItemRendererCreationHandler.init();

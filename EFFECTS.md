@@ -63,7 +63,7 @@ Example:
 
 Structure:
 
-- `identifier`: sparkles
+- `identifier`: sparkle
 - Arguments:
     - `color`: `ARGB`, The color of the sparkle
     - `minLifetime`: `int`, The minimum lifetime of the particle in frames
@@ -141,6 +141,33 @@ Example:
 ```json lines
 {
   "identifier": "pinwheel",
+  "arguments": {
+    "color": "6600F6FF",
+    "width": 0.75,
+    "height": 0.75
+  }
+}
+```
+
+## [Background Glow Effect](src/main/java/brilliant_items/api/entity_item_effects/builtin/BackgroundGlowEffect.java)
+
+> ![Background Glow](images/background_glow.png)
+>
+> Very similar to the pinwheel effect, except with a radial glow texture
+
+Structure:
+
+- `identifier`: background_glow
+- Arguments:
+  - `color`: `ARGB`, The color of the glow
+  - `width`: `float`, The width of the glow in blocks
+  - `height`: `float`, The height of the glow in blocks
+
+Example:
+
+```json lines
+{
+  "identifier": "background_glow",
   "arguments": {
     "color": "6600F6FF",
     "width": 0.75,

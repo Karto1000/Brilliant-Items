@@ -32,36 +32,36 @@ import javax.validation.constraints.Min;
 @Setter
 @Getter
 @SideOnly(Side.CLIENT)
-@ReferencableEffect(identifier = "pinwheel", argumentsClass = PinwheelEffect.Args.class)
-public class PinwheelEffect implements IEntityItemEffect {
+@ReferencableEffect(identifier = "background_glow", argumentsClass = BackgroundGlowEffect.Args.class)
+public class BackgroundGlowEffect implements IEntityItemEffect {
 
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class Args {
-        /// The color of the pinwheel
+        /// The color of the glow
         @Builder.Default
         @JsonAdapter(HexColorAdapter.class)
         public int color = 0xFFFFFFFF;
 
-        /// The width of the pinwheel in blocks
+        /// The width of the glow in blocks
         @Builder.Default
         @Min(0)
         public float width = 0.75F;
 
-        /// The height of the pinwheel in blocks
+        /// The height of the glow in blocks
         @Builder.Default
         @Min(0)
         public float height = 0.75F;
     }
 
-    private final static ResourceLocation PINWHEEL_TEXTURE = new ResourceLocation(
+    private final static ResourceLocation GLOW_TEXTURE = new ResourceLocation(
             BrilliantItems.MODID,
-            "textures/pinwheel.png"
+            "textures/glow.png"
     );
     private final Args options;
 
-    public PinwheelEffect(PinwheelEffect.Args args) {
+    public BackgroundGlowEffect(BackgroundGlowEffect.Args args) {
         this.options = args;
     }
 
@@ -86,12 +86,12 @@ public class PinwheelEffect implements IEntityItemEffect {
             double z,
             float partialTicks
     ) {
-        float pinwheelA = (float) (this.options.color >> 24 & 255) / 255;
-        float pinwheelR = (float) (this.options.color >> 16 & 255) / 255;
-        float pinwheelG = (float) (this.options.color >> 8 & 255) / 255;
-        float pinwheelB = (float) (this.options.color & 255) / 255;
+        float a = (float) (this.options.color >> 24 & 255) / 255;
+        float r = (float) (this.options.color >> 16 & 255) / 255;
+        float g = (float) (this.options.color >> 8 & 255) / 255;
+        float b = (float) (this.options.color & 255) / 255;
 
-        if (pinwheelA > 0) {
+        if (a > 0) {
             ItemStack stack = entity.getItem();
             IBakedModel model = vanillaRenderItem.getItemModelWithOverrides(stack, entity.world, null);
 
@@ -107,23 +107,8 @@ public class PinwheelEffect implements IEntityItemEffect {
                     ? MathHelper.sin(((float) entity.getAge() + partialTicks) / 10.0F + entity.hoverStart) * 0.1F + 0.1F
                     : 0;
 
-            float rotationAngle = (((float) entity.getAge() + partialTicks) / 20.0F + entity.hoverStart) * (180F / (float) Math.PI);
-
-            EntityPlayerSP player = Minecraft.getMinecraft().player;
-            double dotP = player.getLookVec()
-                    .dotProduct(
-                            entity
-                                    .getPositionVector()
-                                    .add(0, bobYValue + 0.2 * groundOffset, 0)
-                                    .subtract(player.getPositionEyes(partialTicks)).normalize()
-                    );
-            float minProd = 0.99F;
-            boolean isLookingAtItem = dotP > minProd;
-
             float pinwheelWidth = this.options.width;
             float pinwheelHeight = this.options.height;
-            if (isLookingAtItem) pinwheelWidth = pinwheelWidth + ((float) dotP - minProd) * 20;
-            if (isLookingAtItem) pinwheelHeight = pinwheelHeight + ((float) dotP - minProd) * 20;
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
@@ -143,38 +128,16 @@ public class PinwheelEffect implements IEntityItemEffect {
             GlStateManager.translate(x, y + bobYValue + 0.2 * groundOffset + pinwheelHeight / 4, z);
             GlStateManager.rotate(-manager.playerViewY, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(manager.playerViewX, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(rotationAngle, 0, 0, 1);
 
             // Move it back a bit so the item is in front of the effect
             GlStateManager.translate(0.0F, 0.0F, 0.10F);
 
-            // Draw the pinwheel
-            Minecraft.getMinecraft().renderEngine.bindTexture(PINWHEEL_TEXTURE);
+            Minecraft.getMinecraft().renderEngine.bindTexture(GLOW_TEXTURE);
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-            buffer.pos(-pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(0, 1).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
-            buffer.pos(pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(1, 1).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
-            buffer.pos(pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(1, 0).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
-            buffer.pos(-pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(0, 0).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
+            buffer.pos(-pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(0, 1).color(r,g, b, a).endVertex();
+            buffer.pos(pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(1, 1).color(r,g, b,a).endVertex();
+            buffer.pos(pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(1, 0).color(r, g, b, a).endVertex();
+            buffer.pos(-pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(0, 0).color(r, g, b,a).endVertex();
 
             tessellator.draw();
 

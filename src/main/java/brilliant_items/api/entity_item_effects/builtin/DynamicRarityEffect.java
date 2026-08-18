@@ -21,7 +21,7 @@ public class DynamicRarityEffect implements IEntityItemEffect {
             0.3F,
             1.5F
     ));
-    private final PinwheelEffect pinwheelEffect = new PinwheelEffect(new PinwheelEffect.Args(
+    private final BackgroundGlowEffect backgroundGlowEffect = new BackgroundGlowEffect(new BackgroundGlowEffect.Args(
             0x00000000,
             0.75F,
             0.75F
@@ -65,9 +65,9 @@ public class DynamicRarityEffect implements IEntityItemEffect {
         int color = Minecraft.getMinecraft().fontRenderer.getColorCode(colorChar) | 0x55000000;
 
         this.pillarEffect.getOptions().color = color;
-        this.pinwheelEffect.getOptions().color = color;
+        this.backgroundGlowEffect.getOptions().color = color;
 
-        this.pinwheelEffect.renderPass(
+        this.backgroundGlowEffect.renderPass(
                 entity,
                 manager,
                 vanillaRenderEntityItem,
