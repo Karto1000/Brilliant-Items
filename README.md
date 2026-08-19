@@ -126,7 +126,7 @@ This interface has two methods which you can override. Each Method returns a `No
 ### Inventory Effects
 
 To implement a custom inventory effect, you need to create a new class and implement the
-`IInventoryItemEffect` interface.
+`IInventoryItemEffect` or `IInventoryItemShaderEffect` interface.
 
 From there you can define your custom rendering logic in the `renderPass` method. Examples can be found in
 the [Builtin Package](src/main/java/brilliant_items/api/inventory_item_effects/builtin)
@@ -183,4 +183,4 @@ public class ClientProxy extends CommonProxy {
 }
 ```
 
-You can then use your effect in the json using the specified identifier
+You can then use your effect in the JSON using the specified identifier
