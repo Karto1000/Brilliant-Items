@@ -3,14 +3,19 @@ package brilliant_items.internal.handlers;
 import brilliant_items.BrilliantItems;
 import brilliant_items.api.IHasEffects;
 import brilliant_items.api.entity_item_effects.IEntityItemEffect;
-import brilliant_items.api.entity_item_effects.builtin.DynamicRarityEffect;
+import brilliant_items.api.entity_item_effects.builtin.BackgroundGlowEffect;
+import brilliant_items.api.entity_item_effects.builtin.GlowPillarEffect;
 import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
+import brilliant_items.api.inventory_item_effects.builtin.ItemBorderEffect;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
 import brilliant_items.internal.capabilities.ItemEffectsProvider;
+import brilliant_items.internal.config.ForgeConfigManager;
 import brilliant_items.internal.config.JsonConfig;
 import brilliant_items.internal.config.JsonConfigManager;
 import brilliant_items.internal.registry.EffectRegistry;
+import brilliant_items.internal.util.ColorUtil;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -83,9 +88,17 @@ public class ItemCapabilityHandler {
             for (IEntityItemEffect effect : effectHaver.getEntityEffects(stack)) effects.add(effect);
             for (IInventoryItemEffect effect : effectHaver.getInventoryEffects(stack)) effects.add(effect);
         } else {
-            Random rand = new Random((long) stack.hashCode() * stack.hashCode());
-            float height = rand.nextFloat() / 2 + 1.5F;
-            effects.add(new DynamicRarityEffect(height));
+            if (ForgeConfigManager.client.ASSIGN_EFFECTS_BASED_ON_RARITY && stack.getItem().getForgeRarity(stack) != EnumRarity.COMMON) {
+                Random rand = new Random((long) stack.hashCode() * stack.hashCode());
+                float height = rand.nextFloat() / 2 + 1.5F;
+
+                int color = ColorUtil.getColorOfItemStack(stack);
+                int lowerAlphaColor = color & 0x00FFFFFF | 0x55000000;
+
+                effects.add(new GlowPillarEffect(GlowPillarEffect.Args.builder().color(lowerAlphaColor).height(height).build()));
+                effects.add(new BackgroundGlowEffect(BackgroundGlowEffect.Args.builder().color(lowerAlphaColor).build()));
+                effects.add(new ItemBorderEffect(new ItemBorderEffect.Args(color)));
+            }
         }
 
         event.addCapability(CAP_KEY, provider);

@@ -7,7 +7,6 @@ import brilliant_items.api.inventory_item_effects.AbsoluteItemTextureUV;
 import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import brilliant_items.api.inventory_item_effects.LocalItemCoordinates;
 import brilliant_items.internal.config.HexColorAdapter;
-import brilliant_items.internal.rendering.ShaderNotFoundException;
 import brilliant_items.internal.util.ColorUtil;
 import com.google.gson.annotations.JsonAdapter;
 import lombok.AllArgsConstructor;

@@ -1,17 +1,12 @@
 package brilliant_items.api.inventory_item_effects;
 
-import brilliant_items.BrilliantItems;
 import brilliant_items.api.IEffect;
-import brilliant_items.internal.rendering.ShaderNotFoundException;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.ARBShaderObjects;
 
 import javax.annotation.Nonnull;
 
@@ -25,6 +20,14 @@ public interface IInventoryItemEffect extends IEffect {
     @Nonnull
     default RenderMode getRenderMode() {
         return RenderMode.IN_FRONT;
+    }
+
+    /// Whether this effect should be rendered while the item is not inside a slot.
+    /// For example, when the user is holding an item with their mouse
+    ///
+    /// @return Whether this item should be rendered when not inside a slot
+    default boolean shouldRenderWhenNotInSlot() {
+        return true;
     }
 
     /// Runs each frame to render the effect

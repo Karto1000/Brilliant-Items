@@ -1,7 +1,6 @@
 package brilliant_items.internal.config;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import lombok.NoArgsConstructor;
 import net.minecraft.util.ResourceLocation;
 

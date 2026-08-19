@@ -1,6 +1,8 @@
 package brilliant_items.internal.util;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 import java.time.Duration;
@@ -9,6 +11,11 @@ import java.util.Map;
 
 public class ColorUtil {
     private final static HashMap<TextureAtlasSprite, Integer> colorCache = new HashMap<>();
+
+    public static int getColorOfItemStack(ItemStack stack) {
+        char colorChar = stack.getItem().getForgeRarity(stack).getColor().toString().charAt(1);
+        return Minecraft.getMinecraft().fontRenderer.getColorCode(colorChar) | 0xFF000000;
+    }
 
     public static float[] colorIntToNormFloat(int color) {
         float a = (float) (color >> 24 & 0xFF) / 255;

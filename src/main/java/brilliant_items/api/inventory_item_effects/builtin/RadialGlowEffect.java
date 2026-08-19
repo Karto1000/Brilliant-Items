@@ -89,5 +89,7 @@ public class RadialGlowEffect implements IInventoryItemShaderEffect {
         buffer.pos(localPos.right, localPos.bottom, 0.0D).tex(uvs.right, uvs.bottom).endVertex();
         buffer.pos(localPos.right, localPos.top, 0.0D).tex(uvs.right, uvs.top).endVertex();
         tessellator.draw();
+
+        ARBShaderObjects.glUseProgramObjectARB(0);
     }
 }

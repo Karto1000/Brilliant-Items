@@ -101,5 +101,7 @@ public class GlowOutlineEffect implements IInventoryItemShaderEffect {
         buffer.pos(localPos.right + 1, localPos.bottom + 1, 0.0D).tex(uvs.right, uvs.bottom).endVertex();
         buffer.pos(localPos.right + 1, localPos.top - 1, 0.0D).tex(uvs.right, uvs.top).endVertex();
         tessellator.draw();
+
+        ARBShaderObjects.glUseProgramObjectARB(0);
     }
 }

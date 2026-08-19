@@ -4,6 +4,7 @@ import brilliant_items.api.inventory_item_effects.*;
 import brilliant_items.internal.capabilities.ItemEffects;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
 import brilliant_items.internal.config.ForgeConfigManager;
+import brilliant_items.internal.proxy.ClientProxy;
 import brilliant_items.internal.rendering.InventoryEffectFramebuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -19,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -129,6 +129,7 @@ public class RenderItemMixin {
             @Nonnull AbsoluteItemTextureUV uvs,
             @Nonnull LocalItemCoordinates pos
     ) {
+        brilliantItems$currentTarget.bindFramebufferTexture();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         buffer.pos(pos.left, pos.top, 0.0D).tex(uvs.left, uvs.top).endVertex();
         buffer.pos(pos.left, pos.bottom, 0.0D).tex(uvs.left, uvs.bottom).endVertex();
@@ -201,6 +202,8 @@ public class RenderItemMixin {
 
         boolean behind = true;
         for (IInventoryItemEffect effect : effects.getInventoryEffects()) {
+            if (!effect.shouldRenderWhenNotInSlot() && !ClientProxy.isRenderingInsideSlot) continue;
+
             if (effect.getRenderMode() == RenderMode.IN_FRONT && behind) {
                 // Here we render the item when the render mode switches from behind to in_front
                 this.brilliantItems$drawItemTexture(tessellator, buffer, texturePosition, localItemCoordinates);
@@ -216,8 +219,6 @@ public class RenderItemMixin {
                     localItemCoordinates,
                     absoluteItemCoordinates
             );
-
-            ARBShaderObjects.glUseProgramObjectARB(0);
         }
 
         // Render the item if we haven't already

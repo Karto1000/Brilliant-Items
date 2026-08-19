@@ -135,10 +135,10 @@ public class BackgroundGlowEffect implements IEntityItemEffect {
 
             Minecraft.getMinecraft().renderEngine.bindTexture(GLOW_TEXTURE);
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-            buffer.pos(-pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(0, 1).color(r,g, b, a).endVertex();
-            buffer.pos(pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(1, 1).color(r,g, b,a).endVertex();
+            buffer.pos(-pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(0, 1).color(r, g, b, a).endVertex();
+            buffer.pos(pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(1, 1).color(r, g, b, a).endVertex();
             buffer.pos(pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(1, 0).color(r, g, b, a).endVertex();
-            buffer.pos(-pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(0, 0).color(r, g, b,a).endVertex();
+            buffer.pos(-pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(0, 0).color(r, g, b, a).endVertex();
 
             tessellator.draw();
 

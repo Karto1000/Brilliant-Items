@@ -8,6 +8,7 @@ import brilliant_items.api.entity_item_effects.builtin.ParticleSpawningEffect;
 import brilliant_items.api.entity_item_effects.builtin.PinwheelEffect;
 import brilliant_items.api.inventory_item_effects.ShaderManager;
 import brilliant_items.api.inventory_item_effects.builtin.GlowOutlineEffect;
+import brilliant_items.api.inventory_item_effects.builtin.ItemBorderEffect;
 import brilliant_items.api.inventory_item_effects.builtin.RadialGlowEffect;
 import brilliant_items.api.inventory_item_effects.builtin.SparkleEffect;
 import brilliant_items.internal.capabilities.ItemEffectsCapability;
@@ -15,32 +16,17 @@ import brilliant_items.internal.config.JsonConfigManager;
 import brilliant_items.internal.config.JsonConfigWatcher;
 import brilliant_items.internal.handlers.EntityItemRendererCreationHandler;
 import brilliant_items.internal.handlers.ItemEntityRenderHandler;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-
-import java.util.Objects;
 
 public class ClientProxy extends CommonProxy {
-    public void registerItemRenderer(
-            Item item,
-            int meta,
-            String id
-    ) {
-        ModelLoader.setCustomModelResourceLocation(
-                item,
-                meta,
-                new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory")
-        );
-    }
+    public static boolean isRenderingInsideSlot = true;
 
     @Override
     public void preInit() {
         BrilliantItemsAPI.registerForJSON(
                 RadialGlowEffect.class, SparkleEffect.class, GlowPillarEffect.class,
                 PinwheelEffect.class, GlowOutlineEffect.class, BackgroundGlowEffect.class,
-                ParticleSpawningEffect.class
+                ParticleSpawningEffect.class, ItemBorderEffect.class
         );
 
         EntityItemRendererCreationHandler.init();
