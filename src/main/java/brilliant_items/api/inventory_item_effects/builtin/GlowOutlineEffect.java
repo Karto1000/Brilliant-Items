@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @SideOnly(Side.CLIENT)
 @ReferencableEffect(identifier = "glow_outline", argumentsClass = GlowOutlineEffect.Args.class)
-public class GlowOutlineEffect implements IInventoryItemEffect {
+public class GlowOutlineEffect implements IInventoryItemShaderEffect {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -45,7 +45,7 @@ public class GlowOutlineEffect implements IInventoryItemEffect {
 
     @Nonnull
     private final Args options;
-    public static final String OUTLINE_SHADER_DEFINITION = "glowOutline";
+    public static final String OUTLINE_SHADER_DEFINITION = "glow_outline";
 
     public GlowOutlineEffect(@Nonnull Args args) {
         this.options = args;
@@ -79,7 +79,7 @@ public class GlowOutlineEffect implements IInventoryItemEffect {
             @Nonnull LocalItemCoordinates localPos,
             @Nonnull AbsoluteItemCoordinates absolutePos
     ) {
-        IInventoryItemEffect.super.renderPass(tessellator, buffer, player, stack, uvs, localPos, absolutePos);
+        IInventoryItemShaderEffect.super.renderPass(tessellator, buffer, player, stack, uvs, localPos, absolutePos);
 
         int programId = this.getShaderProgramId();
 

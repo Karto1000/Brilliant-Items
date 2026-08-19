@@ -1,7 +1,6 @@
 package brilliant_items.api.inventory_item_effects;
 
 import brilliant_items.BrilliantItems;
-import brilliant_items.api.IEffect;
 import brilliant_items.internal.rendering.ShaderNotFoundException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -15,17 +14,12 @@ import org.lwjgl.opengl.ARBShaderObjects;
 
 import javax.annotation.Nonnull;
 
-/// An effect that is applied to an item when it is viewed in any inventory
 @SideOnly(Side.CLIENT)
-public interface IInventoryItemEffect extends IEffect {
-    /// Return a render mode. This decides whether the `renderPass` function should be called before or after the item
-    /// has been rendered
+public interface IInventoryItemShaderEffect extends IInventoryItemEffect {
+    /// Should return the OpenGL id referencing the shader program.
     ///
-    /// @return The Render Mode
-    @Nonnull
-    default RenderMode getRenderMode() {
-        return RenderMode.IN_FRONT;
-    }
+    /// @return The shader program id
+    int getShaderProgramId() throws ShaderNotFoundException;
 
     /// Runs each frame to render the effect
     ///
@@ -36,7 +30,7 @@ public interface IInventoryItemEffect extends IEffect {
     /// @param uvs         The uv coordinates of the texture in the framebuffer
     /// @param localPos    The local position of the item in the current gui container
     /// @param absolutePos The absolute position of the item on the entire screen
-    void renderPass(
+    default void renderPass(
             @Nonnull Tessellator tessellator,
             @Nonnull BufferBuilder buffer,
             @Nonnull EntityLivingBase player,
@@ -44,5 +38,28 @@ public interface IInventoryItemEffect extends IEffect {
             @Nonnull AbsoluteItemTextureUV uvs,
             @Nonnull LocalItemCoordinates localPos,
             @Nonnull AbsoluteItemCoordinates absolutePos
-    );
+    ) {
+        int programId;
+        try {
+            programId = this.getShaderProgramId();
+        } catch (ShaderNotFoundException e) {
+            BrilliantItems.LOGGER.error("Could not find shader for effect", e);
+            return;
+        }
+
+        ARBShaderObjects.glUseProgramObjectARB(programId);
+
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution res = new ScaledResolution(mc);
+
+        int itemPosUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_absoluteItemPosition");
+        int textureUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_texture");
+        int scaledScreenSizeUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_scaledScreenSize");
+
+        if (itemPosUniform != -1) ARBShaderObjects.glUniform2fARB(itemPosUniform, absolutePos.left, absolutePos.top);
+        if (textureUniform != -1) ARBShaderObjects.glUniform1iARB(textureUniform, 0);
+        if (scaledScreenSizeUniform != -1)
+            ARBShaderObjects.glUniform2fARB(scaledScreenSizeUniform, res.getScaledWidth(), res.getScaledHeight());
+
+    }
 }

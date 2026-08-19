@@ -24,6 +24,7 @@ minecraft {
         client {
             args "--username=InDev"
 
+            jvmArg "-Dmixin.env.disableRefMap=true"
             jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
             jvmArg "-Dmixin.debug.export=true"
@@ -130,5 +131,11 @@ jar {
         if (currentTasks[0] == 'build' || currentTasks[0] == 'assemble')
             attr['ForceLoadAsMod'] = "true"
         attributes(attr)
+    }
+}
+
+sourceSets {
+    main {
+        output.resourcesDir = output.classesDirs.files.iterator().next()
     }
 }

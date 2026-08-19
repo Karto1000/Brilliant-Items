@@ -85,15 +85,6 @@ public class SparkleEffect implements IInventoryItemEffect {
         this.options = options;
     }
 
-    /// Should return the OpenGL id referencing the shader program
-    ///
-    /// @return The shader program id
-    @Override
-    public int getShaderProgramId() throws ShaderNotFoundException {
-        // We don't need a shader here
-        return -1;
-    }
-
     @Override
     public void renderPass(
             @Nonnull Tessellator tessellator,

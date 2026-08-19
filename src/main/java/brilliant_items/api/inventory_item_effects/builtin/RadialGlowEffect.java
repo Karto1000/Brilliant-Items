@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @SideOnly(Side.CLIENT)
 @ReferencableEffect(identifier = "radial_glow", argumentsClass = RadialGlowEffect.Args.class)
-public class RadialGlowEffect implements IInventoryItemEffect {
+public class RadialGlowEffect implements IInventoryItemShaderEffect {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -42,7 +42,7 @@ public class RadialGlowEffect implements IInventoryItemEffect {
         public Duration duration = Duration.ZERO;
     }
 
-    public static final String GLOW_SHADER_DESIGNATION = "radialGlow";
+    public static final String GLOW_SHADER_DESIGNATION = "radial_glow";
 
     @Nonnull
     private final Args options;
@@ -70,7 +70,7 @@ public class RadialGlowEffect implements IInventoryItemEffect {
             @Nonnull LocalItemCoordinates localPos,
             @Nonnull AbsoluteItemCoordinates absolutePos
     ) {
-        IInventoryItemEffect.super.renderPass(tessellator, buffer, player, stack, uvs, localPos, absolutePos);
+        IInventoryItemShaderEffect.super.renderPass(tessellator, buffer, player, stack, uvs, localPos, absolutePos);
 
         int programId = this.getShaderProgramId();
         int colorUniform = ARBShaderObjects.glGetUniformLocationARB(programId, "u_color");
