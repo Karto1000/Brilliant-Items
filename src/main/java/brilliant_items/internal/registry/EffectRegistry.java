@@ -2,6 +2,7 @@ package brilliant_items.internal.registry;
 
 import brilliant_items.BrilliantItems;
 import brilliant_items.api.IEffect;
+import brilliant_items.api.ReferencableEffect;
 import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import brilliant_items.api.inventory_item_effects.IInventoryItemEffect;
 import brilliant_items.internal.config.JsonConfigManager;
@@ -31,7 +32,7 @@ public class EffectRegistry {
         }
 
         @Nonnull
-        Optional<T> createInstance(@Nullable JsonObject arguments) {
+        private Optional<T> createInstance(@Nullable JsonObject arguments) {
             try {
                 Object argsInstance = GSON.fromJson(arguments, argsClass);
 
@@ -52,12 +53,18 @@ public class EffectRegistry {
 
                 Set<ConstraintViolation<Object>> violations = JsonConfigManager.VALIDATOR.validate(argsInstance);
                 if (!violations.isEmpty()) {
-                    BrilliantItems.LOGGER.error("Configuration validation failed for effect arguments of '{}'!", this.effectClass.getSimpleName());
+                    String identifier = this.effectClass.getAnnotation(ReferencableEffect.class).identifier();
+                    BrilliantItems.LOGGER.error(
+                            "Invalid Configuration for effect '{}'!",
+                            identifier == null ? this.effectClass.getSimpleName() : identifier
+                    );
                     for (ConstraintViolation<Object> violation : violations) {
-                        BrilliantItems.LOGGER.error(" -> Field '{}' {}. Current value: {}",
+                        BrilliantItems.LOGGER.error(
+                                "-> Field '{}' {}. Current value: {}",
                                 violation.getPropertyPath(),
                                 violation.getMessage(),
-                                violation.getInvalidValue());
+                                violation.getInvalidValue()
+                        );
                     }
 
                     return Optional.empty();

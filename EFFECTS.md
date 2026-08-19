@@ -159,9 +159,9 @@ Structure:
 
 - `identifier`: background_glow
 - Arguments:
-  - `color`: `ARGB`, The color of the glow
-  - `width`: `float`, The width of the glow in blocks
-  - `height`: `float`, The height of the glow in blocks
+    - `color`: `ARGB`, The color of the glow
+    - `width`: `float`, The width of the glow in blocks
+    - `height`: `float`, The height of the glow in blocks
 
 Example:
 
@@ -175,3 +175,42 @@ Example:
   }
 }
 ```
+
+## [Particle Spawning Effect](src/main/java/brilliant_items/api/entity_item_effects/builtin/ParticleSpawningEffect.java)
+
+> ![Particle Spawning](images/particle_spawner.png)
+>
+> Occasionally spawns particles around the item
+
+Structure:
+
+- `identifier`: particle_spawner
+- Arguments:
+    - `particleId`: `int (required)`, The numerical id of the particle. Corresponds to its placement in the
+      `EnumParticleTypes` enum
+    - `rarity`: `int`, A 1 / x chance for a new particle to spawn every frame
+    - `velocity`: `{x: float, y: float, z: float}`, The velocity of the particle **!WARNING! Changes functionality based
+      on the type of particle (i.E it doesn't always equal the velocity)**
+    - `maxAge`: `int`, The maximum age of the particle in frames
+    - `color`: `ARGB`, The color of the particle
+    - `offset`: `{x: float, y: float, z: float}`, An offset from the bottom center of the item. If not specified, a
+      random offset is picked
+
+Example:
+
+```json lines
+{
+  "identifier": "particle_spawner",
+  "arguments": {
+    "particleId": 25,
+    "rarity": 40,
+    "velocity": {
+      "x": 0,
+      "y": 1,
+      "z": 0
+    },
+    "maxAge": 20
+  }
+}
+```
+

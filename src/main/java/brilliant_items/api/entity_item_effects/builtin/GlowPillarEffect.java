@@ -54,10 +54,12 @@ public class GlowPillarEffect implements IEntityItemEffect {
             BrilliantItems.MODID,
             "textures/glow_pillar.png"
     );
+
+    @Nonnull
     private final Args options;
 
 
-    public GlowPillarEffect(Args args) {
+    public GlowPillarEffect(@Nonnull Args args) {
         this.options = args;
     }
 

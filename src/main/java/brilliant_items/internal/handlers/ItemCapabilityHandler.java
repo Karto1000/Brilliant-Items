@@ -47,9 +47,10 @@ public class ItemCapabilityHandler {
 
                 if (!effectO.isPresent()) {
                     BrilliantItems.LOGGER.error(
-                            "Could not create entity effect '{}' with the specified arguments '{}'",
+                            "Could not create entity effect '{}' with the specified arguments '{}' for item '{}'",
                             entityEffect.identifier,
-                            entityEffect.arguments
+                            entityEffect.arguments,
+                            registryName
                     );
                     continue;
                 }

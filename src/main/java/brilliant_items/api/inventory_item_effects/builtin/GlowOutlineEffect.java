@@ -26,9 +26,6 @@ import java.util.Optional;
 @SideOnly(Side.CLIENT)
 @ReferencableEffect(identifier = "glow_outline", argumentsClass = GlowOutlineEffect.Args.class)
 public class GlowOutlineEffect implements IInventoryItemEffect {
-    private final Args options;
-    public static final String OUTLINE_SHADER_DEFINITION = "glowOutline";
-
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -46,7 +43,11 @@ public class GlowOutlineEffect implements IInventoryItemEffect {
         public float sigma = 1.2F;
     }
 
-    public GlowOutlineEffect(Args args) {
+    @Nonnull
+    private final Args options;
+    public static final String OUTLINE_SHADER_DEFINITION = "glowOutline";
+
+    public GlowOutlineEffect(@Nonnull Args args) {
         this.options = args;
     }
 

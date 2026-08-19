@@ -4,6 +4,7 @@ import brilliant_items.BrilliantItems;
 import brilliant_items.api.BrilliantItemsAPI;
 import brilliant_items.api.entity_item_effects.builtin.BackgroundGlowEffect;
 import brilliant_items.api.entity_item_effects.builtin.GlowPillarEffect;
+import brilliant_items.api.entity_item_effects.builtin.ParticleSpawningEffect;
 import brilliant_items.api.entity_item_effects.builtin.PinwheelEffect;
 import brilliant_items.api.inventory_item_effects.ShaderManager;
 import brilliant_items.api.inventory_item_effects.builtin.GlowOutlineEffect;
@@ -38,7 +39,8 @@ public class ClientProxy extends CommonProxy {
     public void preInit() {
         BrilliantItemsAPI.registerForJSON(
                 RadialGlowEffect.class, SparkleEffect.class, GlowPillarEffect.class,
-                PinwheelEffect.class, GlowOutlineEffect.class, BackgroundGlowEffect.class
+                PinwheelEffect.class, GlowOutlineEffect.class, BackgroundGlowEffect.class,
+                ParticleSpawningEffect.class
         );
 
         EntityItemRendererCreationHandler.init();

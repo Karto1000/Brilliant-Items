@@ -8,7 +8,6 @@ import brilliant_items.internal.handlers.CompatibilityHandler;
 import com.google.gson.annotations.JsonAdapter;
 import lombok.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
@@ -59,9 +58,11 @@ public class BackgroundGlowEffect implements IEntityItemEffect {
             BrilliantItems.MODID,
             "textures/glow.png"
     );
+
+    @Nonnull
     private final Args options;
 
-    public BackgroundGlowEffect(BackgroundGlowEffect.Args args) {
+    public BackgroundGlowEffect(@Nonnull Args args) {
         this.options = args;
     }
 

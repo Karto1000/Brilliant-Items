@@ -43,9 +43,11 @@ public class RadialGlowEffect implements IInventoryItemEffect {
     }
 
     public static final String GLOW_SHADER_DESIGNATION = "radialGlow";
+
+    @Nonnull
     private final Args options;
 
-    public RadialGlowEffect(RadialGlowEffect.Args args) {
+    public RadialGlowEffect(@Nonnull Args args) {
         this.options = args;
     }
 

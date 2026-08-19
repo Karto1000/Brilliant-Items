@@ -59,9 +59,11 @@ public class PinwheelEffect implements IEntityItemEffect {
             BrilliantItems.MODID,
             "textures/pinwheel.png"
     );
+
+    @Nonnull
     private final Args options;
 
-    public PinwheelEffect(PinwheelEffect.Args args) {
+    public PinwheelEffect(@Nonnull Args args) {
         this.options = args;
     }
 

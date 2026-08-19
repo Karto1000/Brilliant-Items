@@ -77,9 +77,11 @@ public class SparkleEffect implements IInventoryItemEffect {
             BrilliantItems.MODID,
             "textures/particles/glow.png"
     );
+
+    @Nonnull
     private final Args options;
 
-    public SparkleEffect(Args options) {
+    public SparkleEffect(@Nonnull Args options) {
         this.options = options;
     }
 
