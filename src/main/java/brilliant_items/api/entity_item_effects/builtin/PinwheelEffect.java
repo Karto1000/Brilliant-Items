@@ -5,6 +5,7 @@ import brilliant_items.api.ReferencableEffect;
 import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import brilliant_items.internal.config.HexColorAdapter;
 import brilliant_items.internal.handlers.CompatibilityHandler;
+import brilliant_items.internal.util.ColorUtil;
 import com.google.gson.annotations.JsonAdapter;
 import lombok.*;
 import net.minecraft.client.Minecraft;
@@ -88,12 +89,9 @@ public class PinwheelEffect implements IEntityItemEffect {
             double z,
             float partialTicks
     ) {
-        float pinwheelA = (float) (this.options.color >> 24 & 255) / 255;
-        float pinwheelR = (float) (this.options.color >> 16 & 255) / 255;
-        float pinwheelG = (float) (this.options.color >> 8 & 255) / 255;
-        float pinwheelB = (float) (this.options.color & 255) / 255;
+        float[] colors = ColorUtil.colorIntToNormFloat(this.options.color);
 
-        if (pinwheelA > 0) {
+        if (colors[0] > 0) {
             ItemStack stack = entity.getItem();
             IBakedModel model = vanillaRenderItem.getItemModelWithOverrides(stack, entity.world, null);
 
@@ -153,30 +151,18 @@ public class PinwheelEffect implements IEntityItemEffect {
             // Draw the pinwheel
             Minecraft.getMinecraft().renderEngine.bindTexture(PINWHEEL_TEXTURE);
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-            buffer.pos(-pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(0, 1).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
-            buffer.pos(pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(1, 1).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
-            buffer.pos(pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(1, 0).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
-            buffer.pos(-pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(0, 0).color(
-                    pinwheelR,
-                    pinwheelG,
-                    pinwheelB,
-                    pinwheelA
-            ).endVertex();
+            buffer.pos(-pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(0, 1)
+                    .color(colors[1], colors[2], colors[3], colors[0])
+                    .endVertex();
+            buffer.pos(pinwheelWidth / 2, -pinwheelHeight / 2, 0).tex(1, 1)
+                    .color(colors[1], colors[2], colors[3], colors[0])
+                    .endVertex();
+            buffer.pos(pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(1, 0)
+                    .color(colors[1], colors[2], colors[3], colors[0])
+                    .endVertex();
+            buffer.pos(-pinwheelWidth / 2, pinwheelHeight / 2, 0).tex(0, 0)
+                    .color(colors[1], colors[2], colors[3], colors[0])
+                    .endVertex();
 
             tessellator.draw();
 

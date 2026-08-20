@@ -72,6 +72,9 @@ Structure:
     - `amountOfSparkles`: `int`, The number of particles which should be visible at once
     - `size`: `float`, The size of the particles
     - `texture`: `Resource Location`, The particle texture as a minecraft resource location
+    - `startingRotation`: `float`, The starting rotation of the particle in degrees; Set to a random number if not
+      specified
+    - `endingRotation`: `float`, The ending rotation of the particle in degrees; Set to a random number if not specified
 
 Example:
 
@@ -83,6 +86,8 @@ Example:
     "minLifetime": 800,
     "maxLifetime": 2000,
     "amountOfSparkles": 5,
+    "startingRotation": 45,
+    "endingRotation": 90,
     "size": 2.5,
     "texture": "brilliant_items:textures/particles/glow.png",
     "velocity": {

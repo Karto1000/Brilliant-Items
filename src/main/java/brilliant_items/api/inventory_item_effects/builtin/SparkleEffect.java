@@ -23,10 +23,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.hibernate.validator.constraints.Range;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
@@ -48,6 +51,7 @@ public class SparkleEffect implements IInventoryItemEffect {
 
         /// The velocity of the particle
         @Nonnull
+        @NotNull
         @Builder.Default
         public Vec2f velocity = Vec2f.ZERO;
 
@@ -56,7 +60,7 @@ public class SparkleEffect implements IInventoryItemEffect {
         @Builder.Default
         public int color = 0xFFFFFFFF;
 
-        /// The amount of particles always present over the item
+        /// The number of particles always present over the item
         @Min(0)
         @Builder.Default
         public int amountOfSparkles = 3;
@@ -67,9 +71,18 @@ public class SparkleEffect implements IInventoryItemEffect {
         public float size = 2.5F;
 
         /// The texture of the particle
+        @NotNull
         @Nonnull
         @Builder.Default
         public ResourceLocation texture = DEFAULT_PARTICLE_TEXTURE;
+
+        /// The starting rotation of individual particles in degrees
+        @Nullable
+        public Float startingRotation;
+
+        /// The ending rotation of individual particles in degrees
+        @Nullable
+        public Float endingRotation;
     }
 
     private static final ResourceLocation DEFAULT_PARTICLE_TEXTURE = new ResourceLocation(
@@ -124,16 +137,40 @@ public class SparkleEffect implements IInventoryItemEffect {
 
             float size = this.options.size * intensity;
 
+            float startingRotation = this.options.startingRotation == null
+                    ? rand.nextInt(360)
+                    : this.options.startingRotation;
+            float endingRotation = this.options.endingRotation == null
+                    ? rand.nextInt(360) + startingRotation
+                    : this.options.endingRotation;
+
+            float rotation = startingRotation + (endingRotation - startingRotation) * phase;
+
+            double sin = Math.sin(Math.toRadians(rotation)) * size;
+            double cos = Math.cos(Math.toRadians(rotation)) * size;
+
+            double xTopLeft = centerX - cos + sin;
+            double yTopLeft = centerY - cos - sin;
+
+            double xBottomLeft = centerX - cos - sin;
+            double yBottomLeft = centerY + cos - sin;
+
+            double xBottomRight = centerX + cos - sin;
+            double yBottomRight = centerY + cos + sin;
+
+            double xTopRight = centerX + cos + sin;
+            double yTopRight = centerY - cos + sin;
+
             float[] color = ColorUtil.colorIntToNormFloat(this.options.color);
             float a = intensity * color[0];
             float r = color[1];
             float g = color[2];
             float b = color[3];
 
-            buffer.pos(centerX - size, centerY - size, 0.0D).tex(0.0D, 0.0D).color(r, g, b, a).endVertex();
-            buffer.pos(centerX - size, centerY + size, 0.0D).tex(0.0D, 1.0D).color(r, g, b, a).endVertex();
-            buffer.pos(centerX + size, centerY + size, 0.0D).tex(1.0D, 1.0D).color(r, g, b, a).endVertex();
-            buffer.pos(centerX + size, centerY - size, 0.0D).tex(1.0D, 0.0D).color(r, g, b, a).endVertex();
+            buffer.pos(xTopLeft, yTopLeft, 0).tex(0.0D, 0.0D).color(r, g, b, a).endVertex();
+            buffer.pos(xBottomLeft, yBottomLeft, 0).tex(0.0D, 1.0D).color(r, g, b, a).endVertex();
+            buffer.pos(xBottomRight, yBottomRight, 0.0D).tex(1.0D, 1.0D).color(r, g, b, a).endVertex();
+            buffer.pos(xTopRight, yTopRight, 0.0D).tex(1.0D, 0.0D).color(r, g, b, a).endVertex();
         }
 
         tessellator.draw();

@@ -4,6 +4,7 @@ import brilliant_items.BrilliantItems;
 import brilliant_items.api.ReferencableEffect;
 import brilliant_items.api.entity_item_effects.IEntityItemEffect;
 import brilliant_items.internal.config.HexColorAdapter;
+import brilliant_items.internal.util.ColorUtil;
 import com.google.gson.annotations.JsonAdapter;
 import lombok.*;
 import net.minecraft.client.Minecraft;
@@ -74,12 +75,9 @@ public class GlowPillarEffect implements IEntityItemEffect {
             double z,
             float partialTicks
     ) {
-        float glowPillarA = (float) (this.options.color >> 24 & 255) / 255;
-        float glowPillarR = (float) (this.options.color >> 16 & 255) / 255;
-        float glowPillarG = (float) (this.options.color >> 8 & 255) / 255;
-        float glowPillarB = (float) (this.options.color & 255) / 255;
+        float[] colors = ColorUtil.colorIntToNormFloat(this.options.color);
 
-        if (glowPillarA > 0) {
+        if (colors[0] > 0) {
             float glowPillarWidth = this.options.width;
             float glowPillarHeight = this.options.height;
             float bobYValue = vanillaRenderEntityItem.shouldBob()
@@ -130,37 +128,37 @@ public class GlowPillarEffect implements IEntityItemEffect {
             buffer.pos(-glowPillarWidth / 2, 0, 0)
                     .tex(0, 1)
                     .color(
-                            glowPillarR,
-                            glowPillarG,
-                            glowPillarB,
-                            glowPillarA
+                            colors[1],
+                            colors[2],
+                            colors[3],
+                            colors[0]
                     )
                     .endVertex();
             buffer.pos(glowPillarWidth / 2, 0, 0)
                     .tex(1, 1)
                     .color(
-                            glowPillarR,
-                            glowPillarG,
-                            glowPillarB,
-                            glowPillarA
+                            colors[1],
+                            colors[2],
+                            colors[3],
+                            colors[0]
                     )
                     .endVertex();
             buffer.pos(glowPillarWidth / 2, glowPillarHeight, 0)
                     .tex(1, 0)
                     .color(
-                            glowPillarR,
-                            glowPillarG,
-                            glowPillarB,
-                            glowPillarA
+                            colors[1],
+                            colors[2],
+                            colors[3],
+                            colors[0]
                     )
                     .endVertex();
             buffer.pos(-glowPillarWidth / 2, glowPillarHeight, 0)
                     .tex(0, 0)
                     .color(
-                            glowPillarR,
-                            glowPillarG,
-                            glowPillarB,
-                            glowPillarA
+                            colors[1],
+                            colors[2],
+                            colors[3],
+                            colors[0]
                     )
                     .endVertex();
 

@@ -34,6 +34,7 @@ public class ItemBorderEffect implements IInventoryItemEffect {
     @AllArgsConstructor
     @Builder
     public static class Args {
+        /// The color of the item border
         @JsonAdapter(HexColorAdapter.class)
         @Builder.Default
         public int color = 0xFFFFFFFF;
